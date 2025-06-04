@@ -3,8 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Eye, Star, Bell, Search, Filter, Calendar } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 const StockDashboard = () => {
+
+  const {data, status} = useSession()
+  console.log(data, status)
+
   const [selectedStock, setSelectedStock] = useState('AAPL');
   const [timeRange, setTimeRange] = useState('1D');
   const [activeTab, setActiveTab] = useState('overview');
