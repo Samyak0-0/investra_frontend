@@ -1,11 +1,10 @@
-import StockSearchPage from "@/components/stockSearch/StockSearchPage";
-
-
+import StockDashboard from "@/components/dashboard/Dashboard";
+import StockSearchPage from "@/components/stockSearch/StockSearchPage"; 
 export default function Home() {
+  
   return (
     <div>
-      <StockSearchPage />
+        <StockDashboard />
     </div>
-    
   );
 }
