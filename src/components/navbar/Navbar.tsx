@@ -33,6 +33,13 @@ const Navbar = (props: Props) => {
           Market
         </Link>
 
+        <Link
+          href="/portfolio"
+          className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+        >
+          Portfolio
+        </Link>
+
       </div>
 
       {/* Right Section: Icons */}

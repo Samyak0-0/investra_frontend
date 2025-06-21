@@ -1,7 +1,8 @@
 // @ts-nocheck
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
+import { UserContext } from "@/provider/ContextProvider";
 // Dynamically import ApexCharts to avoid SSR issues
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -13,6 +14,8 @@ const StockSearchPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [chartType, setChartType] = useState<"line" | "candlestick">("line");
+
+  const {user} = useContext(UserContext)
 
   // 2. Transform functions (moved up)
   const transformStockData = (data: any) => {
@@ -189,7 +192,7 @@ const StockSearchPage = () => {
       }
     };
     handleIntervalChange();
-  }, [interval, ticker]);
+  }, [interval]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -215,6 +218,22 @@ const StockSearchPage = () => {
     }
   };
 
+  const handlePortfolio = async () => {
+    try {
+      
+      const response = await fetch(
+        `/api/addPortfolio?ticker=${ticker}&userId=${user.id}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch stock data");
+      }
+      const data = await response.json()
+      console.log(data)
+    } catch (err: any) {
+      console.log("Error: ", err)
+    }
+  }
+
   // 6. Render
   return (
     <>
@@ -234,14 +253,14 @@ const StockSearchPage = () => {
             required
           />
         </div>
-        <div>
+        {/* <div>
           <button 
             onClick={handleGraphChange}
             className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
           >
             Switch to {chartType === "line" ? "Candlestick" : "Line"} Chart
           </button>
-        </div>
+        </div> */}
         <div>
           <label htmlFor="interval" className="block text-sm font-medium mb-1">
             Interval
@@ -278,6 +297,10 @@ const StockSearchPage = () => {
           {loading ? "Loading..." : "Get Stock Data"}
         </button>
       </form>
+
+      <button onClick={handlePortfolio} className="px-5 py-2 bg-blue-500 text-white m-2 ml-0 rounded hover:bg-blue-600">
+        + Add to Portfolio
+      </button>
 
       {error && (
         <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>
