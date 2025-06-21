@@ -217,7 +217,8 @@ const StockSearchPage = () => {
 
   // 6. Render
   return (
-    <div className="mx-auto p-4">
+    <>
+    <div className=" mx-auto p-4">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="ticker" className="block text-sm font-medium mb-1">
@@ -306,6 +307,8 @@ const StockSearchPage = () => {
         </div>
       )}
     </div>
+
+    </>
   );
 };
 

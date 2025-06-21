@@ -175,7 +175,7 @@ const StockDashboard = () => {
               <button
                 key={symbol}
                 onClick={() => setSelectedStock(symbol)}
-                className={`px-4 py-2 rounded-lg transition-all shadow-sm ${
+                className={`px-4 py-2 rounded-lg transition-all shadow-sm cursor-pointer ${
                   selectedStock === symbol
                     ? 'bg-[#0cb9c1] text-white font-semibold'
                     : 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700'
@@ -283,7 +283,7 @@ const StockDashboard = () => {
                     <button
                       key={range}
                       onClick={() => setTimeRange(range)}
-                      className={`px-3 py-1 rounded text-sm transition-colors ${
+                      className={`px-3 py-1 rounded text-sm transition-colors cursor-pointer ${
                         timeRange === range
                           ? 'bg-[#0cb9c1] text-white'
                           : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
