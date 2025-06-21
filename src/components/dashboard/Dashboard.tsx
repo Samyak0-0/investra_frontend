@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Eye, Star, Bell, Search, Filter, Calendar } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { signOut } from "next-auth/react";
 
 const StockDashboard = () => {
 
@@ -164,7 +165,9 @@ const StockDashboard = () => {
         </div>
       </header> */}
 
+
       <div className="max-w-7xl mx-auto px-6 py-6">
+        <button onClick={signOut}>SIGNOUT</button>
         {/* Stock Selector */}
         <div className="mb-6">
           <div className="flex space-x-2">

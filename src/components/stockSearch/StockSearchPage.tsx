@@ -171,12 +171,12 @@ const StockSearchPage = () => {
       setError(null);
 
       try {
-        const response = await fetch(
-          `https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=IBM&apikey=demo`
-        );
         // const response = await fetch(
-        //   `http://127.0.0.1:5000/api/stocks/${ticker}?interval=${interval}`
+        //   `https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=IBM&apikey=demo`
         // );
+        const response = await fetch(
+          `http://127.0.0.1:5000/api/stocks/${ticker}?interval=${interval}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch stock data");
         }
@@ -197,12 +197,12 @@ const StockSearchPage = () => {
     setError(null);
 
     try {
-      const response = await fetch(
-        `https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=IBM&apikey=demo`
-      );
       // const response = await fetch(
-      //   `http://127.0.0.1:5000/api/stocks/${ticker}?interval=${interval}`
+      //   `https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=IBM&apikey=demo`
       // );
+      const response = await fetch(
+        `http://127.0.0.1:5000/api/stocks/${ticker}?interval=${interval}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch stock data");
       }
