@@ -75,8 +75,8 @@ const Profile: React.FC = () => {
 
     // User data state
     const [userData, setUserData] = useState<UserData>({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
+        name: '',
+        email: '',
         phone: '+1-555-123-4567',
         location: 'New York, NY',
         joinDate: '2024-01-15',
@@ -117,6 +117,17 @@ const Profile: React.FC = () => {
         new: false,
         confirm: false
     });
+
+    useEffect(() => {
+        if (status === 'authenticated' && session?.user) {
+            setUserData(prevUserData => ({
+                ...prevUserData,
+                name: session.user?.name ?? '',
+                email: session.user?.email ?? '',
+                avatar: session.user?.image ?? prevUserData.avatar
+            }));
+        }
+    }, [session, status]);
 
     // Form handlers
     const handleSaveProfile = (): void => {
