@@ -51,9 +51,6 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  stockName     String[]
-  stockAmt      Int[]
-
   @@map("users")
 }
 
