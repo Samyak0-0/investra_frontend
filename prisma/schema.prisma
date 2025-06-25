@@ -51,8 +51,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  stockName     String[]
-  stockAmt      Int[]
+  
+  portfolio     Portfolio[]
 
   @@map("users")
 }
@@ -65,4 +65,18 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verificationtokens")
 }
+
+model Portfolio {
+  user_id  String
+  stock_Name String
+  stock_Amt  Int
+  added_at DateTime @default(now())
+
+  user  User   @relation(fields: [user_id], references: [id])
+
+  @@id([user_id, stock_Name])
+  @@map("portfolio")
+}
+
+
 

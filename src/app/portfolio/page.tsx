@@ -1,9 +1,9 @@
-import Portfolio from "@/components/portfolio/Portfolio";
+import PortfolioOverview from "@/components/portfolio/PortfolioOverview";
 
 const page = () => {
   return (
     <div>
-      <Portfolio />
+      <PortfolioOverview />
     </div>
   );
 };
