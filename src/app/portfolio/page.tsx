@@ -1,9 +1,10 @@
 import Portfolio from "@/components/portfolio/Portfolio";
 
+const userId: string = ""; // THIS VALUE MUST BE RETRIEVED FROM SESSION, FUCK YOU
 const page = () => {
   return (
     <div>
-      <Portfolio  userId={'12a89fda-c500-4e2b-bdf1-d5d833c2a822'}/>
+      <Portfolio userId={userId} />
     </div>
   );
 };

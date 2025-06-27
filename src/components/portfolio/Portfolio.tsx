@@ -20,7 +20,7 @@ export default function Portfolio({ userId }: PortfolioProps) {
       const res = await fetch(`http://localhost:5000/api/user/portfolio/add/${symbol}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: userId, quantity: Number(quantity) }),
+        body: JSON.stringify({ user_id:userId, quantity: Number(quantity) }),
       });
 
       const data = await res.json();
@@ -85,7 +85,7 @@ export default function Portfolio({ userId }: PortfolioProps) {
       <ul>
         {portfolio.map((item, i) => (
           <li key={i}>
-            {item.stock_name || item.stock?.name}: {item.quantity}
+            {item.name} : {item.quantity}
           </li>
         ))}
       </ul>
