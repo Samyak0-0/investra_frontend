@@ -28,6 +28,8 @@ import {
   Bar,
 } from "recharts";
 import { useContext, useState } from "react";
+import PortfolioComparison from "./PortfolioComparison";
+import PortfolioSimulation from "./PortfolioSimulation";
 
 const PortfolioOverview = () => {
   const { portfolioStats } = useContext(UserContext);
@@ -191,7 +193,7 @@ const PortfolioOverview = () => {
         </div>
 
         <div className="flex space-x-1 mb-8 bg-white/10 backdrop-blur-md rounded-xl p-1">
-          {["overview", "comparison"].map((tab) => (
+          {["overview", "comparison", "simulation"].map((tab) => (
             <button
               key={tab}
               onClick={() => setSelectedView(tab)}
@@ -448,6 +450,9 @@ const PortfolioOverview = () => {
             )}
           </div>
         )}
+
+        {selectedView === "comparison" && <PortfolioComparison />}
+        {selectedView === "simulation" && <PortfolioSimulation />}
       </div>
     </div>
   );
