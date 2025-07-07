@@ -1,10 +1,10 @@
-import Portfolio from "@/components/portfolio/Portfolio";
+import PortfolioOverview from "@/components/portfolio/PortfolioOverview";
 
 const userId: string = ""; // THIS VALUE MUST BE RETRIEVED FROM SESSION, FUCK YOU
 const page = () => {
   return (
     <div>
-      <Portfolio userId={userId} />
+      <PortfolioOverview />
     </div>
   );
 };

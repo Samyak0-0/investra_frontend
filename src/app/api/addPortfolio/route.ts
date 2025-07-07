@@ -22,13 +22,20 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const updatedStockNames = Array.isArray(user.stockName)
-      ? [...user.stockName, ticker]
-      : [ticker];
+    const currentStockNames = Array.isArray(user.stockName)
+      ? user.stockName
+      : [];
+
+    if (currentStockNames.includes(ticker)) {
+      return NextResponse.json(
+        { message: "Ticker already exists in user's stock list", user },
+        { status: 200 }
+      );
+    }
 
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: { stockName: updatedStockNames },
+      data: { stockName: [...currentStockNames, ticker] },
     });
 
     return NextResponse.json(updatedUser);
