@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import {
     User,
     Mail,
@@ -196,13 +196,44 @@ const Profile: React.FC = () => {
         setShowPasswords({ ...showPasswords, [field]: !showPasswords[field] });
     };
 
+    if (status === 'loading') {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-lg font-semibold text-gray-700">Loading profile...</div>
+            </div>
+        )
+    }
+
+    if (status === 'unauthenticated') {
+        return (
+            <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center text-center p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Pleasee signin</h2>
+                <p className="text-gray-600 mb-6">You need to be signed in to view your profile.</p>
+                <button
+                    onClick={() => signIn()}
+                    className="px-6 py-3 bg-[#0cb9c1] text-white rounded-lg hover:bg-[#0aa8af] transition-colors font-semibold"
+                >
+                    Sign In
+                </button>
+            </div>
+        )
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200">
             <div className="max-w-6xl mx-auto px-6 py-8">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-2">Account Profile</h1>
-                    <p className="text-gray-600">Manage your account settings and investment preferences</p>
+                <div className="flex items-center justify-between mb-8">
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-800 mb-2">Account Profile</h1>
+                        <p className="text-gray-600">Manage your account settings and investment preferences</p>
+                    </div>
+                    <button
+                        onClick={() => signOut()}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
+                    >
+                        Sign Out
+                    </button>
                 </div>
 
                 {/* Profile Header Card */}

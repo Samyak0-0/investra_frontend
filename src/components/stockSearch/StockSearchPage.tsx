@@ -61,6 +61,12 @@ const StockSearchPage = () => {
     switch (interval) {
       case "daily":
         timeSeriesKey = "Time Series (Daily)";
+        return Object.entries(data[timeSeriesKey])
+        .map(([date, values]: [string, any]) => ({
+          x: new Date(date).getTime(),
+          y: parseFloat(values["4. close"]),
+        }))
+        .sort((a, b) => a.x - b.x);
         break;
       case "weekly":
         timeSeriesKey = "Weekly Adjusted Time Series";
