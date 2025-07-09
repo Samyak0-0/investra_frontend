@@ -1,0 +1,112 @@
+{results && (
+        <>
+          {/* Key Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <DollarSign className="text-green-600" size={24} />
+                <h3 className="text-lg font-semibold">Expected Value</h3>
+              </div>
+              <p className="text-2xl font-bold text-green-600">{formatCurrency(results.statistics.mean)}</p>
+              <p className="text-sm text-gray-600">Mean outcome</p>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <TrendingUp className="text-blue-600" size={24} />
+                <h3 className="text-lg font-semibold">Confidence Range</h3>
+              </div>
+              <p className="text-lg font-bold text-blue-600">
+                {formatCurrency(results.statistics.lowerBound)} - {formatCurrency(results.statistics.upperBound)}
+              </p>
+              <p className="text-sm text-gray-600">{confidenceLevel}% confidence</p>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <TrendingDown className="text-red-600" size={24} />
+                <h3 className="text-lg font-semibold">Risk of Loss</h3>
+              </div>
+              <p className="text-2xl font-bold text-red-600">
+                {(results.statistics.probabilityOfLoss * 100).toFixed(1)}%
+              </p>
+              <p className="text-sm text-gray-600">Probability below current value</p>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <Calendar className="text-purple-600" size={24} />
+                <h3 className="text-lg font-semibold">Time Horizon</h3>
+              </div>
+              <p className="text-2xl font-bold text-purple-600">{Math.round(timeHorizon / 252 * 12)} months</p>
+              <p className="text-sm text-gray-600">{timeHorizon} trading days</p>
+            </div>
+          </div>
+
+          {/* Simulation Paths Chart */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 className="text-xl font-semibold mb-4">Simulation Paths (First 100 scenarios)</h3>
+            
+          </div>
+
+          {/* Histogram of Final Values */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-4">Distribution of Final Portfolio Values</h3>
+            
+          </div>
+
+          {/* Detailed Statistics */}
+          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+            <h3 className="text-xl font-semibold mb-4">Detailed Statistics</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold text-gray-700 mb-2">Portfolio Values</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span>Current Value:</span>
+                    <span className="font-medium">{formatCurrency(results.statistics.currentValue)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Expected Value:</span>
+                    <span className="font-medium">{formatCurrency(results.statistics.mean)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Median Value:</span>
+                    <span className="font-medium">{formatCurrency(results.statistics.median)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Best Case:</span>
+                    <span className="font-medium text-green-600">{formatCurrency(results.statistics.bestCase)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Worst Case:</span>
+                    <span className="font-medium text-red-600">{formatCurrency(results.statistics.worstCase)}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold text-gray-700 mb-2">Risk Metrics</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span>Probability of Loss:</span>
+                    <span className="font-medium">{(results.statistics.probabilityOfLoss * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Value at Risk ({confidenceLevel}%):</span>
+                    <span className="font-medium">{formatCurrency(results.statistics.lowerBound)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Potential Gain ({confidenceLevel}%):</span>
+                    <span className="font-medium">{formatCurrency(results.statistics.upperBound - results.statistics.currentValue)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Potential Loss ({confidenceLevel}%):</span>
+                    <span className="font-medium">{formatCurrency(results.statistics.currentValue - results.statistics.lowerBound)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
