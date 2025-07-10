@@ -167,7 +167,6 @@ const StockDashboard = () => {
 
 
       <div className="max-w-7xl mx-auto px-6 py-6">
-        <button onClick={signOut}>SIGNOUT</button>
         {/* Stock Selector */}
         <div className="mb-6">
           <div className="flex space-x-2">
