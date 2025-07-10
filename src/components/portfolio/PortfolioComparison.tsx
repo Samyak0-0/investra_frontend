@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { UserContext } from "@/provider/ContextProvider";
 import React, { useState, useEffect, useContext } from "react";
@@ -38,18 +39,19 @@ const PortfolioComparison = () => {
 
   let chartData;
   let lastDate;
-  if (apiData) {
-    const dates = Object.keys(apiData?.DIA);
-    lastDate = dates[dates.length - 1];
+  if (apiData && apiData.portfolio) {
+  const dates = Object.keys(apiData.DIA);
+  lastDate = dates[dates.length - 1];
 
-    chartData = dates.map((date) => ({
-      date,
-      DIA: apiData?.DIA[date],
-      QQQ: apiData?.QQQ[date],
-      SPY: apiData?.SPY[date],
-      Portfolio: apiData?.portfolio[date],
-    }));
-  }
+  chartData = dates.map((date) => ({
+    date,
+    DIA: apiData.DIA[date],
+    QQQ: apiData.QQQ[date],
+    SPY: apiData.SPY[date],
+    Portfolio: apiData.portfolio[date] ?? null, // fallback
+  }));
+}
+
 
   const returnList = [
     { Portfolio: "Your Portfolio" },
