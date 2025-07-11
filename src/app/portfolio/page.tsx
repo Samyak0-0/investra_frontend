@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Portfolio from "@/components/portfolio/Portfolio";
 import { UserContext } from "@/provider/ContextProvider";
 import { useContext } from "react";
