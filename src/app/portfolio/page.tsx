@@ -1,13 +1,12 @@
 import Portfolio from "@/components/portfolio/Portfolio";
 import { UserContext } from "@/provider/ContextProvider";
-import { useContext } from "react";
 import PortfolioOverview from "@/components/portfolio/PortfolioOverview";
 
+const userId: string = ""; // THIS VALUE MUST BE RETRIEVED FROM SESSION, FUCK YOU
 const page = () => {
-  const user = useContext(UserContext);
   return (
     <div>
-      <Portfolio userId={user.id} />
+      <PortfolioOverview/>
     </div>
   );
 };
