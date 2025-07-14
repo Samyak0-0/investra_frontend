@@ -5,15 +5,78 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { TrendingUp, TrendingDown, DollarSign, Activity, Eye, Star, Bell, Search, Filter, Calendar } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { signOut } from "next-auth/react";
+import { format } from 'date-fns';
+
+
+
+const getNewsData = async (country: String, category: String) => {
+  if (country != null || category != null) {
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/news/${country}/${category}`
+    );
+    return response.json()
+  }
+};
 
 const StockDashboard = () => {
 
-  const {data, status} = useSession()
-  console.log(data, status)
+
+  const { data, status } = useSession();
+
 
   const [selectedStock, setSelectedStock] = useState('AAPL');
   const [timeRange, setTimeRange] = useState('1D');
   const [activeTab, setActiveTab] = useState('overview');
+  const [newsData, setNewsData] = useState([]);
+  const [newsLoading, setNewsLoading] = useState(true);
+  const [newsError, setNewsError] = useState('');
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      setNewsLoading(true);
+      setNewsError(null);
+
+      try {
+        const data = await getNewsData('us', 'business');
+        // Transform the API response to match your component's expected format
+        if (data && data.articles) {
+          const trNews = [];
+          data.articles.slice(0,5).forEach(element => {
+            trNews.push({
+              title: element.title,
+              source: element.source.name,
+              time: element.publishedAt,
+            })
+          });
+          setNewsData(trNews)
+        } else {
+          // Fallback to mock data if API fails
+          setNewsData([{
+            title: '',
+            source: '',
+            time: '',
+          }
+          ]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch news:', error);
+        setNewsError('Failed to load news');
+
+        // Set fallback data
+        setNewsData([{
+          title: '',
+          source: '',
+          time: '',
+        }
+        ]);
+      } finally {
+        setNewsLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
 
   // Sample stock data
   const stockData = {
@@ -110,23 +173,6 @@ const StockDashboard = () => {
   ];
 
   // News data
-  const newsData = [
-    {
-      headline: "Apple Reports Strong Q4 Earnings, Beats Expectations",
-      time: "2 hours ago",
-      source: "Reuters"
-    },
-    {
-      headline: "Tech Stocks Rally as Fed Signals Rate Pause",
-      time: "4 hours ago",
-      source: "Bloomberg"
-    },
-    {
-      headline: "Tesla Deliveries Exceed Analyst Forecasts",
-      time: "6 hours ago",
-      source: "CNBC"
-    }
-  ];
 
   const currentStock = stockData[selectedStock];
 
@@ -167,7 +213,6 @@ const StockDashboard = () => {
 
 
       <div className="max-w-7xl mx-auto px-6 py-6">
-        <button onClick={signOut}>SIGNOUT</button>
         {/* Stock Selector */}
         <div className="mb-6">
           <div className="flex space-x-2">
@@ -175,11 +220,10 @@ const StockDashboard = () => {
               <button
                 key={symbol}
                 onClick={() => setSelectedStock(symbol)}
-                className={`px-4 py-2 rounded-lg transition-all shadow-sm cursor-pointer ${
-                  selectedStock === symbol
-                    ? 'bg-[#0cb9c1] text-white font-semibold'
-                    : 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700'
-                }`}
+                className={`px-4 py-2 rounded-lg transition-all shadow-sm cursor-pointer ${selectedStock === symbol
+                  ? 'bg-[#0cb9c1] text-white font-semibold'
+                  : 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700'
+                  }`}
               >
                 {symbol}
               </button>
@@ -198,13 +242,12 @@ const StockDashboard = () => {
                 <Star className="h-5 w-5 text-yellow-500" />
               </div>
               <p className="text-gray-600 text-sm mb-4">{currentStock.name}</p>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-3xl font-bold text-gray-800">${currentStock.price}</span>
-                  <div className={`flex items-center space-x-1 ${
-                    currentStock.change >= 0 ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <div className={`flex items-center space-x-1 ${currentStock.change >= 0 ? 'text-green-600' : 'text-red-600'
+                    }`}>
                     {currentStock.change >= 0 ? (
                       <TrendingUp className="h-4 w-4" />
                     ) : (
@@ -216,7 +259,7 @@ const StockDashboard = () => {
                     <span>({currentStock.changePercent >= 0 ? '+' : ''}{currentStock.changePercent}%)</span>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-gray-500">Volume</p>
@@ -241,7 +284,7 @@ const StockDashboard = () => {
             {/* Market Movers */}
             <div className="bg-white backdrop-blur-md rounded-xl p-6 border border-gray-200 shadow-sm">
               <h3 className="text-lg font-semibold mb-4 text-gray-800">Market Movers</h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <h4 className="text-sm font-medium text-green-600 mb-2">Top Gainers</h4>
@@ -255,7 +298,7 @@ const StockDashboard = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <div>
                   <h4 className="text-sm font-medium text-red-600 mb-2">Top Losers</h4>
                   {topLosers.map((stock, index) => (
@@ -283,18 +326,17 @@ const StockDashboard = () => {
                     <button
                       key={range}
                       onClick={() => setTimeRange(range)}
-                      className={`px-3 py-1 rounded text-sm transition-colors cursor-pointer ${
-                        timeRange === range
-                          ? 'bg-[#0cb9c1] text-white'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                      }`}
+                      className={`px-3 py-1 rounded text-sm transition-colors cursor-pointer ${timeRange === range
+                        ? 'bg-[#0cb9c1] text-white'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        }`}
                     >
                       {range}
                     </button>
                   ))}
                 </div>
               </div>
-              
+
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={priceData}>
@@ -356,7 +398,7 @@ const StockDashboard = () => {
                   <div className="text-sm text-gray-500">Total Value</div>
                   <div className="text-sm text-green-600">+$2,340 (+1.6%)</div>
                 </div>
-                
+
                 <div className="h-32">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -372,7 +414,7 @@ const StockDashboard = () => {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <Tooltip 
+                      <Tooltip
                         contentStyle={{
                           backgroundColor: '#ffffff',
                           border: '1px solid #d1d5db',
@@ -383,7 +425,7 @@ const StockDashboard = () => {
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-                
+
                 <div className="space-y-2">
                   {portfolioData.map((item, index) => (
                     <div key={index} className="flex items-center justify-between text-sm">
@@ -408,11 +450,11 @@ const StockDashboard = () => {
                 {newsData.map((news, index) => (
                   <div key={index} className="border-b border-gray-200 pb-3 last:border-b-0">
                     <h4 className="text-sm font-medium mb-1 leading-tight text-gray-800">
-                      {news.headline}
+                      {news.title}
                     </h4>
                     <div className="flex items-center justify-between text-xs text-gray-500">
                       <span>{news.source}</span>
-                      <span>{news.time}</span>
+                      <span>{format(news.time , "MM/dd/yyyy")}</span>
                     </div>
                   </div>
                 ))}

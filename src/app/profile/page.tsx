@@ -68,7 +68,7 @@ interface ShowPasswords {
     confirm: boolean;
 }
 
-type TabType = 'profile' | 'investment' | 'security' | 'notifications';
+type TabType = 'profile' | 'investment' | 'security' ; //| 'notifications'
 
 const Profile: React.FC = () => {
     const { data: session, status } = useSession();
@@ -301,7 +301,7 @@ const Profile: React.FC = () => {
                         { id: 'profile' as TabType, label: 'Profile Information', icon: User },
                         { id: 'investment' as TabType, label: 'Investment Preferences', icon: TrendingUp },
                         { id: 'security' as TabType, label: 'Security Settings', icon: Shield },
-                        { id: 'notifications' as TabType, label: 'Notifications', icon: Bell }
+                       // { id: 'notifications' as TabType, label: 'Notifications', icon: Bell }
                     ].map((tab) => (
                         <button
                             key={tab.id}
@@ -597,7 +597,7 @@ const Profile: React.FC = () => {
                     )}
 
                     {/* Notifications Tab */}
-                    {activeTab === 'notifications' && (
+                    {/* {activeTab === 'notifications' && (
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                             <h3 className="text-xl font-semibold text-gray-800 mb-6">Notification Preferences</h3>
 
@@ -634,7 +634,7 @@ const Profile: React.FC = () => {
                                 Save Notification Preferences
                             </button>
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>
