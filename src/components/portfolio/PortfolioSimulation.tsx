@@ -7,9 +7,7 @@ import {
   TrendingUp,
   TrendingDown,
   DollarSign,
-  Calendar,
 } from "lucide-react";
-import Image from "next/image";
 
 const PortfolioSimulation = () => {
   const { user } = useContext(UserContext);
@@ -19,15 +17,6 @@ const PortfolioSimulation = () => {
   const [confidenceLevel, setConfidenceLevel] = useState(95);
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState(null);
-
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
 
   const runSimulation = async () => {
     setIsRunning(true);
@@ -46,7 +35,13 @@ const PortfolioSimulation = () => {
     );
 
     try {
-      const fetchSimulations = await fetch(fetchURL.toString());
+      const fetchSimulations = await fetch(fetchURL.toString(), {
+        cache: "no-cache",
+        headers: {
+          "Cache-Control": "no-cache",
+          "Pragma": "no-cache",
+        },
+      });
 
       if (!fetchSimulations.ok) {
         throw new Error(`HTTP error! status: ${fetchSimulations.status}`);
@@ -148,12 +143,66 @@ const PortfolioSimulation = () => {
         </div>
       </div>
 
-      {results && <div>
-       
-        <img src={results?.paths_plot} alt="Paths visualization" />
-        <img src={results?.most_probable_path_plot} alt="most_probable_path_plot" />
-        <img src={results?.histogram} alt="histogram" />
-        </div>}
+      {results && (
+        <div className="">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <DollarSign className="text-green-600" size={24} />
+                <h3 className="text-lg font-semibold">Expected Value</h3>
+              </div>
+              <p className="text-2xl font-bold text-green-600">
+                {results?.mean_final_value}
+              </p>
+              <p className="text-sm text-gray-600">Mean outcome</p>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <DollarSign className="text-slate-900" size={24} />
+                <h3 className="text-lg font-semibold">Median Value</h3>
+              </div>
+              <p className="text-2xl font-bold text-green-600">
+                {results?.median_final_value}
+              </p>
+              <p className="text-sm text-gray-600">Median outcome</p>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <TrendingUp className="text-blue-600" size={24} />
+                <h3 className="text-lg font-semibold">Confidence Range</h3>
+              </div>
+              <p className="text-lg font-bold text-blue-600">
+                $ {results?.low_interval}&nbsp;&nbsp;-&nbsp;&nbsp;$ {results?.high_interval}
+              </p>
+              <p className="text-sm text-gray-600">
+                {confidenceLevel}% confidence
+              </p>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <TrendingDown className="text-red-600" size={24} />
+                <h3 className="text-lg font-semibold">Risk of Loss</h3>
+              </div>
+              <p className="text-2xl font-bold text-red-600">
+                {results?.probability_of_loss}%
+              </p>
+              <p className="text-sm text-gray-600">
+                Probability below current value
+              </p>
+            </div>
+          </div>
+
+          <div className=" grid grid-cols-1">
+            <div>
+              <img src={results?.paths_plot} alt="Paths visualization" />
+              <img src={results?.histogram} alt="histogram" />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
