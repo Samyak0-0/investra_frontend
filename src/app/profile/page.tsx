@@ -132,7 +132,7 @@ const Profile: React.FC = () => {
     // Form handlers
     const handleSaveProfile = async () => {
     try {
-        const response = await fetch('/api/profile/update', {
+        const response = await fetch('/api/profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
@@ -147,7 +147,7 @@ const Profile: React.FC = () => {
 
     const handleSavePreferences = async () => {
         try {
-            const response = await fetch("/api/investment/update", {
+            const response = await fetch("/api/investment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(investmentPrefs),
