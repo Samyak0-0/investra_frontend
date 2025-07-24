@@ -10,14 +10,14 @@ import { UserContext } from "@/provider/ContextProvider";
 
 
 
-// const getNewsData = async (country: String, category: String) => {
-//   if (country != null || category != null) {
-//     const response = await fetch(
-//       `http://127.0.0.1:5000/api/news/${country}/${category}`
-//     );
-//     return response.json()
-//   }
-// };
+const getNewsData = async (country: String, category: String) => {
+  if (country != null || category != null) {
+    const response = await fetch(
+      `http://127.0.0.1:5000/api/news/${country}/${category}`
+    );
+    return response.json()
+  }
+};
 
 
 
