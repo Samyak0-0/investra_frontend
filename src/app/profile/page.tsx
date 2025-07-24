@@ -68,7 +68,7 @@ interface ShowPasswords {
     confirm: boolean;
 }
 
-type TabType = 'profile' | 'investment' | 'security' ; //| 'notifications'
+type TabType = 'profile' | 'investment' ; // 'security' ; //| 'notifications'
 
 const Profile: React.FC = () => {
     const { data: session, status } = useSession();
@@ -130,18 +130,35 @@ const Profile: React.FC = () => {
     }, [session, status]);
 
     // Form handlers
-    const handleSaveProfile = (): void => {
-        // API call to save profile data
-        console.log('Saving profile:', userData);
+    const handleSaveProfile = async () => {
+    try {
+        const response = await fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+        });
+        const result = await response.json();
+        console.log('Saved profile:', result);
         setIsEditing(false);
-        // Add success notification here
+    }     catch (err) {
+        console.error('Failed to save profile', err);
+    }
     };
 
-    const handleSavePreferences = (): void => {
-        // API call to save investment preferences
-        console.log('Saving preferences:', investmentPrefs);
-        // Add success notification here
+    const handleSavePreferences = async () => {
+        try {
+            const response = await fetch("/api/investment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(investmentPrefs),
+        });
+        const data = await response.json();
+        console.log("Saved preferences", data);
+        } catch (err) {
+        console.error("Error saving preferences", err);
+        }
     };
+
 
     const handlePasswordChange = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
@@ -300,7 +317,7 @@ const Profile: React.FC = () => {
                     {[
                         { id: 'profile' as TabType, label: 'Profile Information', icon: User },
                         { id: 'investment' as TabType, label: 'Investment Preferences', icon: TrendingUp },
-                        { id: 'security' as TabType, label: 'Security Settings', icon: Shield },
+                        //{ id: 'security' as TabType, label: 'Security Settings', icon: Shield },
                        // { id: 'notifications' as TabType, label: 'Notifications', icon: Bell }
                     ].map((tab) => (
                         <button
@@ -452,7 +469,7 @@ const Profile: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-6">
+                                {/* <div className="mt-6">
                                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                         <div>
                                             <h4 className="font-medium text-gray-800">Auto-Rebalancing</h4>
@@ -467,7 +484,7 @@ const Profile: React.FC = () => {
                                             />
                                         </label>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <button
                                     onClick={handleSavePreferences}
@@ -480,11 +497,10 @@ const Profile: React.FC = () => {
                     )}
 
                     {/* Security Settings Tab */}
-                    {activeTab === 'security' && (
+                    {/* {activeTab === 'security' && (
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                             <h3 className="text-xl font-semibold text-gray-800 mb-6">Security Settings</h3>
 
-                            {/* Change Password Section */}
                             <div className="border-b border-gray-200 pb-6 mb-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <div>
@@ -578,9 +594,7 @@ const Profile: React.FC = () => {
                                         </div>
                                     </form>
                                 )}
-                            </div>
-
-                            {/* Two-Factor Authentication */}
+                            </div> 
                             <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg border border-yellow-200">
                                 <div className="flex items-center space-x-3">
                                     <AlertTriangle className="w-5 h-5 text-yellow-600" />
@@ -594,7 +608,7 @@ const Profile: React.FC = () => {
                                 </button>
                             </div>
                         </div>
-                    )}
+                    )} */}
 
                     {/* Notifications Tab */}
                     {/* {activeTab === 'notifications' && (

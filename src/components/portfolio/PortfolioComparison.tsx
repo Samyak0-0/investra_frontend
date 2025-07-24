@@ -94,7 +94,7 @@ const PortfolioComparison = () => {
                     <div>
                       <p className="text-gray-600 text-sm">{value}</p>
                       <p className="text-2xl font-bold text-gray-900">
-                        ${((returns - 1)*100).toFixed(2)} %
+                        ${((returns - 1) * 100).toFixed(2)} %
                       </p>
                     </div>
                   </div>
@@ -129,7 +129,7 @@ const PortfolioComparison = () => {
             <Line
               type="monotone"
               dataKey="Portfolio"
-              stroke="#3794e6"
+              stroke="#02993a"
               strokeWidth={3}
               dot={false}
               activeDot={{ r: 6 }}
@@ -138,7 +138,7 @@ const PortfolioComparison = () => {
             <Line
               type="monotone"
               dataKey="SPY"
-              stroke="#ff9900"
+              stroke="#ffcc80"
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 6 }}
@@ -147,7 +147,7 @@ const PortfolioComparison = () => {
             <Line
               type="monotone"
               dataKey="DIA"
-              stroke="#610a70"
+              stroke="#b39ddb"
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 6 }}
@@ -156,7 +156,7 @@ const PortfolioComparison = () => {
             <Line
               type="monotone"
               dataKey="QQQ"
-              stroke="#82ca9d"
+              stroke="#90caf9"
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 6 }}
