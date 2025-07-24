@@ -77,10 +77,10 @@ const StockDashboard = () => {
     );
   };
 
-  // useEffect(() => {
-  //   const fetchNews = async () => {
-  //     setNewsLoading(true);
-  //     setNewsError(null);
+  useEffect(() => {
+    const fetchNews = async () => {
+      setNewsLoading(true);
+      setNewsError(null);
 
       try {
         const data = await getNewsData('us', 'business');
@@ -120,8 +120,8 @@ const StockDashboard = () => {
       }
     };
 
-  //   fetchNews();
-  // }, []);
+    fetchNews();
+  }, []);
 
   const pieChartData =
     portfolioStats &&
