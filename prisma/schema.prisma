@@ -52,18 +52,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  portfolio            Portfolio[]
-  userProfile          UserProfile?
-  investmentPreference InvestmentPreference?
-
-  @@map("users")
-}
-
-// me added this  
-model UserProfile {
-  id               Int      @id @default(autoincrement())
-  userId           String   @unique
-  user             User     @relation(fields: [userId], references: [id])
   phone            String?
   location         String?
   joinDate         DateTime @default(now())
@@ -71,21 +59,27 @@ model UserProfile {
   avatar           String?
   riskTolerance    String?
   investmentGoals  String?
-  preferredSectors String[] // stored as a Postgres text[]
+  preferredSectors String[]
+
+  portfolio            Portfolio[]
+  investmentPreference InvestmentPreference?
+
+  @@map("users")
 }
+
 
 model InvestmentPreference {
   id                   Int     @id @default(autoincrement())
   userId               String  @unique
-  user                 User    @relation(fields: [userId], references: [id])
   riskTolerance        String?
   investmentHorizon    String?
   monthlyInvestment    Int?
   portfolioValue       Int?
   diversificationLevel String?
+
+  user                 User    @relation(fields: [userId], references: [id])
 }
 
-//upto here
 
 model VerificationToken {
   identifier String

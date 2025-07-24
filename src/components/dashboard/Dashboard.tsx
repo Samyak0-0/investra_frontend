@@ -9,14 +9,14 @@ import { format } from 'date-fns';
 
 
 
-const getNewsData = async (country: String, category: String) => {
-  if (country != null || category != null) {
-    const response = await fetch(
-      `http://127.0.0.1:5000/api/news/${country}/${category}`
-    );
-    return response.json()
-  }
-};
+// const getNewsData = async (country: String, category: String) => {
+//   if (country != null || category != null) {
+//     const response = await fetch(
+//       `http://127.0.0.1:5000/api/news/${country}/${category}`
+//     );
+//     return response.json()
+//   }
+// };
 
 const StockDashboard = () => {
 
@@ -31,51 +31,51 @@ const StockDashboard = () => {
   const [newsLoading, setNewsLoading] = useState(true);
   const [newsError, setNewsError] = useState('');
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      setNewsLoading(true);
-      setNewsError(null);
+  // useEffect(() => {
+  //   const fetchNews = async () => {
+  //     setNewsLoading(true);
+  //     setNewsError(null);
 
-      try {
-        const data = await getNewsData('us', 'business');
-        // Transform the API response to match your component's expected format
-        if (data && data.articles) {
-          const trNews = [];
-          data.articles.slice(0,5).forEach(element => {
-            trNews.push({
-              title: element.title,
-              source: element.source.name,
-              time: element.publishedAt,
-            })
-          });
-          setNewsData(trNews)
-        } else {
-          // Fallback to mock data if API fails
-          setNewsData([{
-            title: '',
-            source: '',
-            time: '',
-          }
-          ]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch news:', error);
-        setNewsError('Failed to load news');
+  //     try {
+  //       const data = await getNewsData('us', 'business');
+  //       // Transform the API response to match your component's expected format
+  //       if (data && data.articles) {
+  //         const trNews = [];
+  //         data.articles.slice(0,5).forEach(element => {
+  //           trNews.push({
+  //             title: element.title,
+  //             source: element.source.name,
+  //             time: element.publishedAt,
+  //           })
+  //         });
+  //         setNewsData(trNews)
+  //       } else {
+  //         // Fallback to mock data if API fails
+  //         setNewsData([{
+  //           title: '',
+  //           source: '',
+  //           time: '',
+  //         }
+  //         ]);
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to fetch news:', error);
+  //       setNewsError('Failed to load news');
 
-        // Set fallback data
-        setNewsData([{
-          title: '',
-          source: '',
-          time: '',
-        }
-        ]);
-      } finally {
-        setNewsLoading(false);
-      }
-    };
+  //       // Set fallback data
+  //       setNewsData([{
+  //         title: '',
+  //         source: '',
+  //         time: '',
+  //       }
+  //       ]);
+  //     } finally {
+  //       setNewsLoading(false);
+  //     }
+  //   };
 
-    fetchNews();
-  }, []);
+  //   fetchNews();
+  // }, []);
 
 
   // Sample stock data

@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 import { UserContext } from "@/provider/ContextProvider";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Play,
   Settings,

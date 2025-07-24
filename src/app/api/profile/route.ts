@@ -1,17 +1,6 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.id) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
   const body = await request.json();
   const {
     phone,
@@ -21,22 +10,13 @@ export async function POST(request: Request) {
     riskTolerance,
     investmentGoals,
     preferredSectors,
+    email,
   } = body;
 
   try {
-    const profile = await prisma.userProfile.upsert({
-      where: { userId: session.user.id },
-      update: {
-        phone,
-        location,
-        bio,
-        avatar,
-        riskTolerance,
-        investmentGoals,
-        preferredSectors,
-      },
-      create: {
-        userId: session.user.id,
+    const profile = await prisma.user.update({
+      where: { email: email },
+      data: {
         phone,
         location,
         bio,
