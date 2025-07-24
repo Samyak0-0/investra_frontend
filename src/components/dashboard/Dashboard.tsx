@@ -1,11 +1,12 @@
 // @ts-nocheck
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Eye, Star, Bell, Search, Filter, Calendar } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { signOut } from "next-auth/react";
 import { format } from 'date-fns';
+import { UserContext } from "@/provider/ContextProvider";
 
 
 
@@ -18,64 +19,121 @@ import { format } from 'date-fns';
 //   }
 // };
 
+
+
 const StockDashboard = () => {
 
 
   const { data, status } = useSession();
 
 
+  const [userPortfolio, setUserPortfolio] = useState([]);
   const [selectedStock, setSelectedStock] = useState('AAPL');
   const [timeRange, setTimeRange] = useState('1D');
   const [activeTab, setActiveTab] = useState('overview');
   const [newsData, setNewsData] = useState([]);
   const [newsLoading, setNewsLoading] = useState(true);
   const [newsError, setNewsError] = useState('');
+  const { portfolioStats } = useContext(UserContext);
+
+
+  const dailyGainLoss =
+    portfolioStats?.totalValue - portfolioStats?.yesterdaysValue;
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedView, setSelectedView] = useState("overview");
+  let totalShares = 0;
+
+  const pieChartColors = [
+    "#06b6d4",
+    "#3b82f6",
+    "#10b981",
+    "#f59e0b",
+    "#ef4444",
+  ];
+
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+  }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
 
   // useEffect(() => {
   //   const fetchNews = async () => {
   //     setNewsLoading(true);
   //     setNewsError(null);
 
-  //     try {
-  //       const data = await getNewsData('us', 'business');
-  //       // Transform the API response to match your component's expected format
-  //       if (data && data.articles) {
-  //         const trNews = [];
-  //         data.articles.slice(0,5).forEach(element => {
-  //           trNews.push({
-  //             title: element.title,
-  //             source: element.source.name,
-  //             time: element.publishedAt,
-  //           })
-  //         });
-  //         setNewsData(trNews)
-  //       } else {
-  //         // Fallback to mock data if API fails
-  //         setNewsData([{
-  //           title: '',
-  //           source: '',
-  //           time: '',
-  //         }
-  //         ]);
-  //       }
-  //     } catch (error) {
-  //       console.error('Failed to fetch news:', error);
-  //       setNewsError('Failed to load news');
+      try {
+        const data = await getNewsData('us', 'business');
+        // Transform the API response to match your component's expected format
+        if (data && data.articles) {
+          const trNews = [];
+          data.articles.slice(0, 5).forEach(element => {
+            trNews.push({
+              title: element.title,
+              source: element.source.name,
+              time: element.publishedAt,
+            })
+          });
+          setNewsData(trNews)
+        } else {
+          // Fallback to mock data if API fails
+          setNewsData([{
+            title: '',
+            source: '',
+            time: '',
+          }
+          ]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch news:', error);
+        setNewsError('Failed to load news');
 
-  //       // Set fallback data
-  //       setNewsData([{
-  //         title: '',
-  //         source: '',
-  //         time: '',
-  //       }
-  //       ]);
-  //     } finally {
-  //       setNewsLoading(false);
-  //     }
-  //   };
+        // Set fallback data
+        setNewsData([{
+          title: '',
+          source: '',
+          time: '',
+        }]
+        );
+      } finally {
+        setNewsLoading(false);
+      }
+    };
 
   //   fetchNews();
   // }, []);
+
+  const pieChartData =
+    portfolioStats &&
+    portfolioStats.portfolio.map((stock, index) => {
+      const totalValue = parseFloat(stock.closing_price) * stock.stock_amt;
+      return {
+        name: stock.stock_name,
+        value: totalValue,
+        percentage: ((totalValue / portfolioStats.totalValue) * 100).toFixed(1),
+        color: pieChartColors[index % pieChartColors.length],
+      };
+    });
 
 
   // Sample stock data
@@ -150,7 +208,6 @@ const StockDashboard = () => {
     { time: '15:00', volume: 2800000 }
   ];
 
-  // Portfolio data
   const portfolioData = [
     { name: 'AAPL', value: 45000, color: '#007AFF' },
     { name: 'GOOGL', value: 28000, color: '#34C759' },
@@ -400,30 +457,23 @@ const StockDashboard = () => {
                 </div>
 
                 <div className="h-32">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={portfolioData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={20}
-                        outerRadius={50}
-                        dataKey="value"
-                      >
-                        {portfolioData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: '#ffffff',
-                          border: '1px solid #d1d5db',
-                          borderRadius: '8px',
-                          color: '#374151'
-                        }}
-                      />
+                {pieChartData &
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={pieChartData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={renderCustomizedLabel}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                    </Pie>
                     </PieChart>
                   </ResponsiveContainer>
+                }
                 </div>
 
                 <div className="space-y-2">
@@ -454,7 +504,7 @@ const StockDashboard = () => {
                     </h4>
                     <div className="flex items-center justify-between text-xs text-gray-500">
                       <span>{news.source}</span>
-                      <span>{format(news.time , "MM/dd/yyyy")}</span>
+                      <span>{format(news.time, "MM/dd/yyyy")}</span>
                     </div>
                   </div>
                 ))}
