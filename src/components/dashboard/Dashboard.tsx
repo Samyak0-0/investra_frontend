@@ -58,7 +58,8 @@ const StockDashboard = () => {
         fill="white"
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
-        fontSize="12"
+        fontSize="20"
+        fontWeight={"bold"}
       >
         {`${(percent * 100).toFixed(0)}%`}
       </text>
@@ -160,7 +161,7 @@ const StockDashboard = () => {
             <div className="bg-white backdrop-blur-md rounded-xl p-6 border border-gray-200 shadow-sm h-full">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-bold text-gray-800">{selectedStock}</h2>
-                <Star className="h-5 w-5 text-yellow-500" />
+                <Star fill='orange' className="h-5 w-5 text-yellow-500" />
               </div>
 
               {currentStock && (
@@ -190,22 +191,22 @@ const StockDashboard = () => {
 
                   <div className="space-y-3 text-sm">
                     <div className="border-b border-gray-200 pb-2">
-                      <p className="text-gray-500">Shares Owned</p>
-                      <p className="font-semibold text-gray-800">{currentStock.stock_amt}</p>
+                      <p className="text-lg text-gray-800">Shares Owned</p>
+                      <p className="text-lg font-semibold text-gray-800">{currentStock.stock_amt}</p>
                     </div>
                     <div className="border-b border-gray-200 pb-2">
-                      <p className="text-gray-500">Total Value</p>
-                      <p className="font-semibold text-gray-800">
+                      <p className="text-lg text-gray-800">Total Value</p>
+                      <p className="text-lg font-semibold text-gray-800">
                         ${(parseFloat(currentStock.closing_price) * currentStock.stock_amt).toFixed(2)}
                       </p>
                     </div>
                     <div className="border-b border-gray-200 pb-2">
-                      <p className="text-gray-500">Closing Price</p>
-                      <p className="font-semibold text-gray-800">${parseFloat(currentStock.closing_price).toFixed(2)}</p>
+                      <p className="text-lg text-gray-800">Closing Price</p>
+                      <p className="text-lg font-semibold text-gray-800">${parseFloat(currentStock.closing_price).toFixed(2)}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Second Price</p>
-                      <p className="font-semibold text-gray-800">${parseFloat(currentStock.second_price).toFixed(2)}</p>
+                      <p className="text-lg text-gray-800">Second Price</p>
+                      <p className="text-lg font-semibold text-gray-800">${parseFloat(currentStock.second_price).toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
@@ -240,11 +241,11 @@ const StockDashboard = () => {
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: item.color }}
                           ></div>
-                          <span className="text-lg text-gray-800">{item.name}</span>
+                          <span className="text-xl text-gray-800">{item.name}</span>
                         </div>
                         <div className="text-center space-x-10">
                           <div className="text-lg text-gray-800">${item.value.toFixed(2)}</div>
-                          <div className="text-xs text-gray-500">{item.percentage}%</div>
+                          <div className="text-md text-gray-800">{item.percentage}%</div>
                         </div>
                       </div>
                     ))}
@@ -255,16 +256,26 @@ const StockDashboard = () => {
                 <div className="flex items-center justify-center">
                   {pieChartData && (
                     <div className="h-95 w-80">
-                      <ResponsiveContainer width="80%" height="80%">
+                      <ResponsiveContainer width="100%" height="90%">
                         <PieChart>
+                          <circle
+                            cx="50%"
+                            cy="45%"
+                            r={150.5} // Slightly larger than outerRadius
+                            fill="black"
+                            stroke="#1a1b1cff" // Border color (gray-700 in Tailwind)
+                            strokeWidth={4}
+                          />
                           <Pie
                             data={pieChartData}
                             cx="50%"
                             cy="45%"
                             labelLine={false}
                             label={renderCustomizedLabel}
-                            outerRadius={120}
+                            outerRadius={150}
                             fill="#8884d8"
+                            stroke="#ffffff" // Border color between slices
+                            strokeWidth={1.5}   // Thickness of the border
                             dataKey="value"
                           >
                             {pieChartData.map((entry, index) => (
