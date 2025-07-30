@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 import { UserContext } from "@/provider/ContextProvider";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Play,
   Settings,
@@ -9,21 +9,43 @@ import {
   TrendingDown,
   DollarSign,
 } from "lucide-react";
+import { set } from "date-fns";
 
 const PortfolioSimulation = () => {
-  const { user } = useContext(UserContext);
+  const { user, portfolioStats } = useContext(UserContext);
 
+  // Build ticker options: "Your Portfolio" + tickers from portfolioStats.portfolio
+  const portfolioTickers =
+    portfolioStats?.portfolio?.map((item) => item.stock_name) || [];
+  const availableTickers = ["Your Portfolio", ...portfolioTickers];
+
+  const [startingValue, setStartingValue] = useState(0);
   const [simulations, setSimulations] = useState(1000);
   const [timeHorizon, setTimeHorizon] = useState(252); // 1 year in trading days
   const [confidenceLevel, setConfidenceLevel] = useState(95);
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState(null);
+  const [simulationTicker, setSimulationTicker] = useState("Your Portfolio");
+
+  useEffect(() => {
+    if (!portfolioStats) return;
+
+    if (simulationTicker === "Your Portfolio") {
+      setStartingValue(portfolioStats?.totalValue || 0);
+    } else {
+      const found = portfolioStats?.portfolio?.find(
+        (item) => item.stock_name === simulationTicker
+      );
+      setStartingValue(found?.closing_price || 0);
+    }
+  }, [portfolioStats, simulationTicker]);
 
   const runSimulation = async () => {
     setIsRunning(true);
 
     const fetchURL = new URL(`http://127.0.0.1:5000/api/simulation/`);
     const params = {
+      simulationTicker: simulationTicker,
       simulations: simulations,
       timeHorizon: timeHorizon,
       confLevel: confidenceLevel,
@@ -40,7 +62,7 @@ const PortfolioSimulation = () => {
         cache: "no-cache",
         headers: {
           "Cache-Control": "no-cache",
-          "Pragma": "no-cache",
+          Pragma: "no-cache",
         },
       });
 
@@ -76,7 +98,27 @@ const PortfolioSimulation = () => {
           <h2 className="text-xl font-semibold">Simulation Parameters</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* Change grid-cols-4 to grid-cols-5 to fit the new select */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {/* Simulation Target */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Simulation Target
+            </label>
+            <select
+              value={simulationTicker}
+              onChange={(e) => setSimulationTicker(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            >
+              {availableTickers.map((ticker) => (
+                <option key={ticker} value={ticker}>
+                  {ticker}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Number of Simulations */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Number of Simulations
@@ -92,6 +134,7 @@ const PortfolioSimulation = () => {
             />
           </div>
 
+          {/* Time Horizon */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Time Horizon (days)
@@ -107,6 +150,7 @@ const PortfolioSimulation = () => {
             />
           </div>
 
+          {/* Confidence Level */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Confidence Level (%)
@@ -122,6 +166,7 @@ const PortfolioSimulation = () => {
             />
           </div>
 
+          {/* Run Button */}
           <div className="flex items-end">
             <button
               onClick={runSimulation}
@@ -150,6 +195,17 @@ const PortfolioSimulation = () => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center gap-3 mb-2">
                 <DollarSign className="text-green-600" size={24} />
+                <h3 className="text-lg font-semibold">Starting Value</h3>
+              </div>
+              <p className="text-2xl font-bold text-green-600">
+                {startingValue}
+              </p>
+              <p className="text-sm text-gray-600">Mean outcome</p>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <DollarSign className="text-green-600" size={24} />
                 <h3 className="text-lg font-semibold">Expected Value</h3>
               </div>
               <p className="text-2xl font-bold text-green-600">
@@ -175,7 +231,8 @@ const PortfolioSimulation = () => {
                 <h3 className="text-lg font-semibold">Confidence Range</h3>
               </div>
               <p className="text-lg font-bold text-blue-600">
-                $ {results?.low_interval}&nbsp;&nbsp;-&nbsp;&nbsp;$ {results?.high_interval}
+                $ {results?.low_interval}&nbsp;&nbsp;-&nbsp;&nbsp;${" "}
+                {results?.high_interval}
               </p>
               <p className="text-sm text-gray-600">
                 {confidenceLevel}% confidence
