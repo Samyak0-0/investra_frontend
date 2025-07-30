@@ -10,10 +10,10 @@ import { UserContext } from "@/provider/ContextProvider";
 
 
 
-const getNewsData = async (country: String, category: String) => {
+const getNewsData = async (country: String, category: String,company: String) => {
   if (country != null || category != null) {
     const response = await fetch(
-      `http://127.0.0.1:5000/api/news/${country}/${category}`
+      `http://127.0.0.1:5000/api/news/${country}/${category}/${company}`
     );
     return response.json()
   }
@@ -83,7 +83,7 @@ const StockDashboard = () => {
       setNewsError(null);
 
       try {
-        const data = await getNewsData('us', 'business');
+        const data = await getNewsData('us', 'business','google');
         // Transform the API response to match your component's expected format
         if (data && data.articles) {
           const trNews = [];
