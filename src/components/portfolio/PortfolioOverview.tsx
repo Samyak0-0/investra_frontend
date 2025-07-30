@@ -50,25 +50,40 @@ const PortfolioOverview = () => {
 
   let totalShares = 0;
 
-  const pieChartColors = [
-    "#06b6d4",
-    "#3b82f6",
-    "#10b981",
-    "#f59e0b",
-    "#ef4444",
-  ];
+  const generateColors = (count: number): string[] => {
+    const colors: string[] = [];
+    const saturation = 70;
+    const lightness = 50;
+
+    for (let i = 0; i < count; i++) {
+      const hue = Math.floor((360 / count) * i); // Evenly spaced hues
+      colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+    }
+
+    return colors;
+  };
+
+  const pieChartColors: string[] = [];
 
   const pieChartData =
     portfolioStats &&
-    portfolioStats.portfolio.map((stock, index) => {
-      const totalValue = parseFloat(stock.closing_price) * stock.stock_amt;
-      return {
-        name: stock.stock_name,
-        value: totalValue,
-        percentage: ((totalValue / portfolioStats.totalValue) * 100).toFixed(1),
-        color: pieChartColors[index % pieChartColors.length],
-      };
-    });
+    (() => {
+      const colors = generateColors(portfolioStats.portfolio.length);
+      return portfolioStats.portfolio.map((stock, index) => {
+        const totalValue = parseFloat(stock.closing_price) * stock.stock_amt;
+        const color = colors[index];
+        pieChartColors.push(color);
+
+        return {
+          name: stock.stock_name,
+          value: totalValue,
+          percentage: ((totalValue / portfolioStats.totalValue) * 100).toFixed(
+            1
+          ),
+          color,
+        };
+      });
+    })();
 
   const renderCustomizedLabel = ({
     cx,
@@ -148,15 +163,15 @@ const PortfolioOverview = () => {
     })
       .then((res) => res.json())
       .then(() => {
-        setShowEditModal(false)
-        setStockSelectedTicker(null)
+        setShowEditModal(false);
+        setStockSelectedTicker(null);
         set_new_no_of_Stocks(0);
         console.log("Stock edited successfully");
       })
       .catch((err) => {
         console.error("Error editing stock:", err);
       });
-  }
+  };
 
   return (
     <div className="min-h-screen w-full bg-white p-6">

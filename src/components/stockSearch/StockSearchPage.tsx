@@ -55,38 +55,42 @@ const StockSearchPage = () => {
   };
 
   const transformStockData2 = (data: any) => {
-    if (!data) return [];
+  if (!data) return [];
 
-    let timeSeriesKey;
-    switch (interval) {
-      case "daily":
-        timeSeriesKey = "Time Series (Daily)";
-        return Object.entries(data[timeSeriesKey])
-        .map(([date, values]: [string, any]) => ({
-          x: new Date(date).getTime(),
-          y: parseFloat(values["4. close"]),
-        }))
-        .sort((a, b) => a.x - b.x);
-        break;
-      case "weekly":
-        timeSeriesKey = "Weekly Adjusted Time Series";
-        break;
-      case "monthly":
-        timeSeriesKey = "Monthly Adjusted Time Series";
-        break;
-      default:
-        timeSeriesKey = "Time Series (Daily)";
-    }
+  let timeSeriesKey;
+  let valueKey; // To differentiate between "4. close" and "5. adjusted close"
 
-    if (!data[timeSeriesKey]) return [];
+  switch (interval) {
+    case "daily":
+      timeSeriesKey = "Time Series (Daily)";
+      valueKey = "4. close";
+      break;
+    case "weekly":
+      timeSeriesKey = "Weekly Adjusted Time Series";
+      valueKey = "5. adjusted close"; // Assuming weekly and monthly also use adjusted close
+      break;
+    case "monthly":
+      timeSeriesKey = "Monthly Adjusted Time Series";
+      valueKey = "5. adjusted close"; // Assuming weekly and monthly also use adjusted close
+      break;
+    default:
+      timeSeriesKey = "Time Series (Daily)";
+      valueKey = "4. close";
+  }
 
-    return Object.entries(data[timeSeriesKey])
-      .map(([date, values]: [string, any]) => ({
-        x: new Date(date).getTime(),
-        y: parseFloat(values["5. adjusted close"]),
-      }))
-      .sort((a, b) => a.x - b.x);
-  };
+  // **Crucial: Check if data[timeSeriesKey] exists BEFORE Object.entries()**
+  if (!data[timeSeriesKey]) {
+    console.log("No data found for key:", timeSeriesKey, "in transformStockData2");
+    return [];
+  }
+
+  return Object.entries(data[timeSeriesKey])
+    .map(([date, values]: [string, any]) => ({
+      x: new Date(date).getTime(),
+      y: parseFloat(values[valueKey]),
+    }))
+    .sort((a, b) => a.x - b.x);
+};
 
   // 3. Memoized values
   const chartOptions = React.useMemo(() => ({
