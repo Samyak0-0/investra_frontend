@@ -1,45 +1,48 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function POST(request: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("userId");
-    const ticker = searchParams.get("ticker");
+    const { stockTicker, no_of_Stocks, userId } = await request.json();
 
-    if (!id || !ticker) {
-      return NextResponse.json(
-        { error: "User id and ticker are required" },
-        { status: 400 }
-      );
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id },
+    const existingPortfolio = await prisma.portfolio.findFirst({
+      where: {
+        user_id: userId,
+        stock_Name: stockTicker,
+      },
     });
 
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (existingPortfolio) {
+      
+      const updatedPortfolio = await prisma.portfolio.update({
+        where: {
+          
+          user_id_stock_Name: {
+            user_id: userId,
+            stock_Name: stockTicker,
+          },
+        },
+        data: {
+          stock_Amt: existingPortfolio.stock_Amt + no_of_Stocks, 
+        },
+      });
+      return NextResponse.json(updatedPortfolio, { status: 200 });
+    } else {
+      
+      const newPortfolio = await prisma.portfolio.create({
+        data: {
+          user_id: userId,        
+          stock_Name: stockTicker,
+          stock_Amt: no_of_Stocks, 
+        },
+      });
+      return NextResponse.json(newPortfolio, { status: 201 });
     }
-
-    const currentStockNames = Array.isArray(user.stockName)
-      ? user.stockName
-      : [];
-
-    if (currentStockNames.includes(ticker)) {
-      return NextResponse.json(
-        { message: "Ticker already exists in user's stock list", user },
-        { status: 200 }
-      );
-    }
-
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data: { stockName: [...currentStockNames, ticker] },
-    });
-
-    return NextResponse.json(updatedUser);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.error("Error adding stock to portfolio:", error);
+    return NextResponse.json(
+      { error: "Failed to add stock to portfolio" },
+      { status: 500 }
+    );
   }
 }

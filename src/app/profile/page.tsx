@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import {
     User,
@@ -24,6 +24,7 @@ import {
     EyeOff,
     AlertTriangle
 } from 'lucide-react';
+import { UserContext } from '@/provider/ContextProvider';
 
 // Type definitions
 interface UserData {
@@ -72,18 +73,19 @@ type TabType = 'profile' | 'investment' ; // 'security' ; //| 'notifications'
 
 const Profile: React.FC = () => {
     const { data: session, status } = useSession();
+    const {user, portfolioStats} = useContext(UserContext)
 
     // User data state
     const [userData, setUserData] = useState<UserData>({
         name: '',
         email: '',
-        phone: '+1-555-123-4567',
-        location: 'New York, NY',
-        joinDate: '2024-01-15',
-        bio: 'Passionate investor with 5+ years of experience in equity markets and portfolio management.',
+        phone: '',
+        location: '',
+        joinDate: '',
+        bio: '',
         avatar: '/default-avatar.jpg',
-        riskTolerance: 'Moderate',
-        investmentGoals: 'Long-term Growth',
+        riskTolerance: '',
+        investmentGoals: '',
         preferredSectors: ['Technology', 'Healthcare', 'Financial Services']
     });
 
@@ -119,15 +121,22 @@ const Profile: React.FC = () => {
     });
 
     useEffect(() => {
-        if (status === 'authenticated' && session?.user) {
+        if (user?.id && status === 'authenticated' && session?.user) {
             setUserData(prevUserData => ({
                 ...prevUserData,
                 name: session.user?.name ?? '',
                 email: session.user?.email ?? '',
-                avatar: session.user?.image ?? prevUserData.avatar
+                avatar: session.user?.image ?? prevUserData.avatar,
+                phone: user.phone,
+                location: user.location,
+                joinDate: user.joinDate,
+                bio: user.bio,
+                riskTolerance: user.riskTolerance,
+                investmentGoals: user.investmentGoals,
+
             }));
         }
-    }, [session, status]);
+    }, [session, status, user]);
 
     // Form handlers
     const handleSaveProfile = async () => {
@@ -135,8 +144,12 @@ const Profile: React.FC = () => {
         const response = await fetch('/api/profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          ...userData,
+          userId: user.id
+        }),
         });
+
         const result = await response.json();
         console.log('Saved profile:', result);
         setIsEditing(false);
@@ -301,7 +314,7 @@ const Profile: React.FC = () => {
                         {/* Quick Stats */}
                         <div className="grid grid-cols-2 gap-4 text-center">
                             <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg">
-                                <div className="text-2xl font-bold text-green-600">$145K</div>
+                                <div className="text-2xl font-bold text-green-600">$ {portfolioStats.totalValue}</div>
                                 <div className="text-sm text-green-700">Portfolio Value</div>
                             </div>
                             <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg">
@@ -399,7 +412,7 @@ const Profile: React.FC = () => {
                             <div className="mt-6">
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
                                 <textarea
-                                    value={userData.bio}
+                                    value={userData?.bio}
                                     onChange={(e) => handleInputChange('bio', e.target.value)}
                                     disabled={!isEditing}
                                     rows={4}
