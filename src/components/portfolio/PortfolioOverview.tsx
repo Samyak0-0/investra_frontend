@@ -48,7 +48,6 @@ const PortfolioOverview = () => {
     null
   );
 
-  let totalShares = 0;
 
   const generateColors = (count: number): string[] => {
     const colors: string[] = [];
@@ -113,7 +112,7 @@ const PortfolioOverview = () => {
 
   const handleAddStock = () => {
     if (!stockTicker || !no_of_Stocks) return;
-    fetch("/api/addPortfolio", {
+    fetch("http://127.0.0.1:5000/api/stocks/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -107,7 +107,7 @@ const StockDashboard = () => {
   }, []);
 
   // Create pie chart data from portfolioStats
-  const pieChartData = portfolioStats && portfolioStats.portfolio.map((stock, index) => {
+  const pieChartData = portfolioStats && portfolioStats?.portfolio.map((stock, index) => {
     const totalValue = parseFloat(stock.closing_price) * stock.stock_amt;
     return {
       name: stock.stock_name,
