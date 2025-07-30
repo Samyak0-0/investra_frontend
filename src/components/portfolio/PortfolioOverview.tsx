@@ -30,13 +30,24 @@ import {
 import { useContext, useState } from "react";
 import PortfolioComparison from "./PortfolioComparison";
 import PortfolioSimulation from "./PortfolioSimulation";
+import { set } from "date-fns";
 
 const PortfolioOverview = () => {
-  const { portfolioStats } = useContext(UserContext);
+  const { portfolioStats, user } = useContext(UserContext);
   const dailyGainLoss =
     portfolioStats?.totalValue - portfolioStats?.yesterdaysValue;
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedView, setSelectedView] = useState("overview");
+
+  const [stockTicker, setStockTicker] = useState(null);
+  const [stockSelectedTicker, setStockSelectedTicker] = useState(null);
+  const [no_of_Stocks, set_no_of_Stocks] = useState(0);
+  const [new_no_of_Stocks, set_new_no_of_Stocks] = useState(0);
+  const [pendingDeleteStock, setPendingDeleteStock] = useState<string | null>(
+    null
+  );
+
   let totalShares = 0;
 
   const pieChartColors = [
@@ -85,6 +96,68 @@ const PortfolioOverview = () => {
     );
   };
 
+  const handleAddStock = () => {
+    if (!stockTicker || !no_of_Stocks) return;
+    fetch("/api/addPortfolio", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        stockTicker,
+        no_of_Stocks,
+        userId: user?.id,
+      }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setShowAddModal(false);
+        setStockTicker(null);
+        set_no_of_Stocks(0);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleStockDelete = (stockName: string) => {
+    fetch("/api/deletePortfolio", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        stockName,
+        userId: user?.id,
+      }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        console.log("Stock deleted successfully");
+      })
+      .catch((err) => {
+        console.error("Error deleting stock:", err);
+      });
+  };
+
+  const handleEditStock = () => {
+    fetch("/api/editPortfolio", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        stockName: stockSelectedTicker,
+        userId: user?.id,
+        stock_Amt: new_no_of_Stocks,
+      }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setShowEditModal(false)
+        setStockSelectedTicker(null)
+        set_new_no_of_Stocks(0);
+        console.log("Stock edited successfully");
+      })
+      .catch((err) => {
+        console.error("Error editing stock:", err);
+      });
+  }
+
   return (
     <div className="min-h-screen w-full bg-white p-6">
       <div className="max-w-7xl mx-auto">
@@ -97,38 +170,6 @@ const PortfolioOverview = () => {
             Track your investments and analyze performance
           </p>
         </div>
-
-        {/* <div>
-          <ul className="space-y-4">
-            {portfolioStats &&
-              portfolioStats.portfolio.map((stock, index) => {
-                totalShares += stock.stock_amt;
-
-                return (
-                  <li
-                    key={index}
-                    className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm"
-                  >
-                    <div className="text-lg font-medium text-gray-800 dark:text-gray-100">
-                      {stock.stock_name}
-                    </div>
-                    <div className="text-gray-600 dark:text-gray-300">
-                      {stock.stock_amt} shares
-                    </div>
-                  </li>
-                );
-              })}
-
-            <li className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm">
-              <div className="text-lg font-medium text-gray-800 dark:text-gray-100">
-                Total Shares:
-              </div>
-              <div className="text-gray-600 dark:text-gray-300">
-                {totalShares} shares
-              </div>
-            </li>
-          </ul>
-        </div> */}
 
         {/* Portfolio Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -271,9 +312,21 @@ const PortfolioOverview = () => {
                       </div>
                       <div className="flex space-x-2">
                         <button className="text-gray-500 hover:text-gray-900">
-                          <Edit3 className="w-4 h-4" />
+                          <Edit3
+                            className="w-4 h-4"
+                            onClick={() => {
+                              setShowEditModal(true);
+                              setStockSelectedTicker(stock.stock_name);
+                              set_new_no_of_Stocks(stock.stock_amt);
+                            }}
+                          />
                         </button>
-                        <button className="text-gray-500 hover:text-red-500">
+                        <button
+                          className="text-gray-500 hover:text-red-500"
+                          onClick={() =>
+                            setPendingDeleteStock(stock.stock_name)
+                          }
+                        >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -421,6 +474,8 @@ const PortfolioOverview = () => {
                         type="text"
                         className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         placeholder="e.g., AAPL"
+                        value={stockTicker || ""}
+                        onChange={(e) => setStockTicker(e.target.value)}
                       />
                     </div>
                     <div>
@@ -431,6 +486,10 @@ const PortfolioOverview = () => {
                         type="number"
                         className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         placeholder="10"
+                        value={no_of_Stocks || 0}
+                        onChange={(e) =>
+                          set_no_of_Stocks(Number(e.target.value))
+                        }
                       />
                     </div>
                   </div>
@@ -441,8 +500,95 @@ const PortfolioOverview = () => {
                     >
                       Cancel
                     </button>
-                    <button className="flex-1 bg-gradient-to-r from-slate-500 to-cyan-200 hover:from-slate-600 hover:to-cyan-300 text-white py-3 rounded-lg transition-all">
+                    <button
+                      className="flex-1 bg-gradient-to-r from-slate-500 to-cyan-200 hover:from-slate-600 hover:to-cyan-300 text-white py-3 rounded-lg transition-all"
+                      onClick={handleAddStock}
+                    >
                       Add Stock
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {showEditModal && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 w-full max-w-md">
+                  <h3 className="text-xl font-bold text-white mb-6">
+                    Edit Stock Details
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-2">
+                        Stock Symbol
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="e.g., AAPL"
+                        value={stockSelectedTicker || ""}
+                        readOnly
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-300 text-sm mb-2">
+                        Number of Shares
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="10"
+                        value={new_no_of_Stocks || 0}
+                        onChange={(e) =>
+                          set_new_no_of_Stocks(Number(e.target.value))
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="flex space-x-4 mt-8">
+                    <button
+                      onClick={() => setShowEditModal(false)}
+                      className="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="flex-1 bg-gradient-to-r from-slate-500 to-cyan-200 hover:from-slate-600 hover:to-cyan-300 text-white py-3 rounded-lg transition-all"
+                      onClick={handleEditStock}
+                    >
+                      Edit Stock
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {pendingDeleteStock && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+                <div className="bg-white rounded-2xl p-8 border border-gray-200 w-full max-w-md">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">
+                    Confirm Deletion
+                  </h3>
+                  <p className="mb-6 text-gray-700">
+                    Are you sure you want to delete{" "}
+                    <span className="font-semibold">{pendingDeleteStock}</span>{" "}
+                    from your portfolio?
+                  </p>
+                  <div className="flex space-x-4">
+                    <button
+                      onClick={() => setPendingDeleteStock(null)}
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition-all"
+                      onClick={() => {
+                        handleStockDelete(pendingDeleteStock);
+                        setPendingDeleteStock(null);
+                      }}
+                    >
+                      Delete
                     </button>
                   </div>
                 </div>
