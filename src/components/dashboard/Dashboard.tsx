@@ -8,10 +8,11 @@ import { signOut } from "next-auth/react";
 import { format } from 'date-fns';
 import { UserContext } from "@/provider/ContextProvider";
 
+
 const getNewsData = async (country: String, category: String) => {
   if (country != null || category != null) {
     const response = await fetch(
-      `http://127.0.0.1:5000/api/news/${country}/${category}`
+      `http://127.0.0.1:5000/api/news/${country}/${category}/${company}`
     );
     return response.json()
   }
