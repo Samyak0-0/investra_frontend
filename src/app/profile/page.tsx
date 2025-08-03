@@ -314,7 +314,7 @@ const Profile: React.FC = () => {
                         {/* Quick Stats */}
                         <div className="grid grid-cols-2 gap-4 text-center">
                             <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg">
-                                <div className="text-2xl font-bold text-green-600">$ {portfolioStats.totalValue}</div>
+                                <div className="text-2xl font-bold text-green-600">$ {portfolioStats?.totalValue}</div>
                                 <div className="text-sm text-green-700">Portfolio Value</div>
                             </div>
                             <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg">

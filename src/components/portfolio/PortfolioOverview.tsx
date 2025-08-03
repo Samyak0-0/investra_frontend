@@ -237,7 +237,7 @@ const PortfolioOverview = () => {
                 <p className="text-gray-600 text-sm">Performance</p>
                 <p className="text-2xl font-bold text-green-500">
                   {parseFloat(
-                    (dailyGainLoss / portfolioStats?.totalValue).toFixed(4)
+                    (dailyGainLoss / portfolioStats?.totalValue).toFixed(3)
                   ) * 100}{" "}
                   %{" "}
                 </p>
