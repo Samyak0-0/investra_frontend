@@ -48,7 +48,6 @@ const PortfolioOverview = () => {
     null
   );
 
-
   const generateColors = (count: number): string[] => {
     const colors: string[] = [];
     const saturation = 70;
@@ -208,7 +207,11 @@ const PortfolioOverview = () => {
                     dailyGainLoss >= 0 ? "text-green-500" : "text-red-500"
                   }`}
                 >
-                  {dailyGainLoss >= 0 ? "+" : ""}${dailyGainLoss.toFixed(2)}
+                  {dailyGainLoss >= 0 ? "+" : ""}$
+                  {Number(dailyGainLoss).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
                 </p>
               </div>
               {dailyGainLoss >= 0 ? (
@@ -236,10 +239,13 @@ const PortfolioOverview = () => {
               <div>
                 <p className="text-gray-600 text-sm">Performance</p>
                 <p className="text-2xl font-bold text-green-500">
-                  {parseFloat(
-                    (dailyGainLoss / portfolioStats?.totalValue).toFixed(3)
-                  ) * 100}{" "}
-                  %{" "}
+                  {portfolioStats?.totalValue
+                    ? (
+                        (dailyGainLoss / portfolioStats.totalValue) *
+                        100
+                      ).toFixed(2)
+                    : "0.00"}{" "}
+                  %
                 </p>
               </div>
               <Target className="text-cyan-500 w-8 h-8" />
@@ -315,12 +321,11 @@ const PortfolioOverview = () => {
                           {stock.closing_price - stock.second_price >= 0
                             ? "+"
                             : ""}
-                          {parseFloat(
-                            (
-                              (stock.closing_price - stock.second_price) /
-                              stock.closing_price
-                            ).toFixed(4)
-                          ) * 100}{" "}
+                          {(
+                            ((stock.closing_price - stock.second_price) /
+                              stock.closing_price) *
+                            100
+                          ).toFixed(2)}{" "}
                           %{" "}
                         </p>
                       </div>
