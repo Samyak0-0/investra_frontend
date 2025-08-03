@@ -130,13 +130,12 @@ const Navbar = (props: Props) => {
             <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
           </Link>
 
-          <Link
-            href="/stock"
-            className="relative px-5 py-2.5 text-gray-600 hover:text-blue-600 transition-all duration-300 group font-medium"
-          >
-            <span className="relative z-10">Market</span>
-            <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
-          </Link>
+        <Link
+          href="/stock"
+          className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+        >
+          Market
+        </Link>
 
         <Link
           href="/portfolio"
@@ -144,7 +143,21 @@ const Navbar = (props: Props) => {
         >
           Portfolio
         </Link>
+         <Link
+          href="/predictions"
+          className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+        >
+          Predictions
+        </Link>
 
+          {/* <Link
+            href="/portfolio"
+            className="relative px-5 py-2.5 text-gray-600 hover:text-blue-600 transition-all duration-300 group font-medium"
+          >
+            <span className="relative z-10">Portfolio</span>
+            <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+          </Link> */}
+        </div>
       </div>
 
       {/* Right Section: Profile */}
