@@ -25,37 +25,46 @@ export default function StockChart({ actualData, predictedData }: Props) {
     },
   ];
 
-  const options: any = {
-    chart: {
-      type: "line",
-      height: 500,
-      zoom: { enabled: true },
+ const options: any = {
+  chart: {
+    type: "line",
+    height: 500,
+    zoom: { enabled: true },
+  },
+  xaxis: {
+    type: "datetime",
+  },
+  yaxis: {
+    labels: {
+      formatter: (val: number) => val.toFixed(2), // 2 decimal digits
     },
-    xaxis: {
-      type: "datetime",
+  },
+  stroke: {
+    width: 2,
+  },
+  markers: {
+    size: 0,
+  },
+  tooltip: {
+    x: { format: "dd MMM yyyy" },
+    y: {
+      formatter: (val: number) => val.toFixed(2), // 2 decimal digits
     },
-    stroke: {
-      width: 2,
-    },
-    markers: {
-      size: 0,
-    },
-    tooltip: {
-      x: { format: "dd MMM yyyy" },
-    },
-    annotations: {
-      xaxis: [
-        {
-          x: predictionStart,
-          borderColor: "#FF4560",
-          label: {
-            style: { color: "#fff", background: "#FF4560" },
-            text: "Prediction Start",
-          },
+  },
+  annotations: {
+    xaxis: [
+      {
+        x: predictionStart,
+        borderColor: "#FF4560",
+        label: {
+          style: { color: "#fff", background: "#FF4560" },
+          text: "Prediction Start",
         },
-      ],
-    },
-  };
+      },
+    ],
+  },
+};
+
 
   return <Chart options={options} series={series} type="line" height={500} />;
 }
