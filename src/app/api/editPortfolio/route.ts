@@ -24,6 +24,10 @@ export async function POST(request: Request) {
       },
     });
 
+    fetch(`http://127.0.0.1:5000/api/reset/?userId=${userId}`, {
+      method: "DELETE",
+    });
+
     return NextResponse.json(
       { message: "Portfolio updated successfully", updatedPortfolio },
       { status: 200 }

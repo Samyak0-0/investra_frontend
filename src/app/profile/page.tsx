@@ -323,7 +323,7 @@ const Profile: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 text-center">
               <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg">
                 <div className="text-2xl font-bold text-green-600">
-                  $ {portfolioStats?.totalValue}
+                  ${Number(portfolioStats?.totalValue).toFixed(2)}
                 </div>
                 <div className="text-sm text-green-700">Portfolio Value</div>
               </div>

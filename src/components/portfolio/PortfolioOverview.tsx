@@ -132,8 +132,13 @@ const PortfolioOverview = () => {
     })
       .then((res) => res.json())
       .then(() => {
+        return fetch(`http://127.0.0.1:5000/api/reset/?userId=${user?.id}`, {
+          method: "DELETE",
+        });
+      })
+      .then(() => {
         setShowAddModal(false);
-        setStockTicker(null);
+        setStockTicker("");
         set_no_of_Stocks(0);
         window.location.reload();
       })
@@ -154,6 +159,7 @@ const PortfolioOverview = () => {
       .then((res) => res.json())
       .then(() => {
         console.log("Stock deleted successfully");
+        window.location.reload();
       })
       .catch((err) => {
         console.error("Error deleting stock:", err);
@@ -492,30 +498,32 @@ const PortfolioOverview = () => {
 
             {showAddModal && (
               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 w-full max-w-md">
-                  <h3 className="text-xl font-bold text-white mb-6">
+                <div className="bg-white rounded-2xl p-8 border border-gray-300 w-full max-w-md">
+                  <h3 className="text-xl font-bold text-black mb-6">
                     Add New Stock
                   </h3>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-gray-300 text-sm mb-2">
+                      <label className="block text-gray-700 text-sm mb-2">
                         Stock Symbol
                       </label>
                       <input
                         type="text"
-                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="e.g., AAPL"
                         value={stockTicker || ""}
-                        onChange={(e) => setStockTicker(e.target.value)}
+                        onChange={(e) =>
+                          setStockTicker(e.target.value.toUpperCase())
+                        }
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-300 text-sm mb-2">
+                      <label className="block text-gray-700 text-sm mb-2">
                         Number of Shares
                       </label>
                       <input
                         type="number"
-                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="10"
                         value={no_of_Stocks || 0}
                         onChange={(e) =>
@@ -527,12 +535,12 @@ const PortfolioOverview = () => {
                   <div className="flex space-x-4 mt-8">
                     <button
                       onClick={() => setShowAddModal(false)}
-                      className="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg transition-all"
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-black py-3 rounded-lg transition-all"
                     >
                       Cancel
                     </button>
                     <button
-                      className="flex-1 bg-gradient-to-r from-slate-500 to-cyan-200 hover:from-slate-600 hover:to-cyan-300 text-white py-3 rounded-lg transition-all"
+                      className="flex-1 bg-gradient-to-r from-blue-400 to-cyan-300 hover:from-blue-500 hover:to-cyan-400 text-white py-3 rounded-lg transition-all"
                       onClick={handleAddStock}
                     >
                       Add Stock
@@ -544,30 +552,30 @@ const PortfolioOverview = () => {
 
             {showEditModal && (
               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 w-full max-w-md">
-                  <h3 className="text-xl font-bold text-white mb-6">
+                <div className="bg-white rounded-2xl p-8 border border-gray-300 w-full max-w-md">
+                  <h3 className="text-xl font-bold text-black mb-6">
                     Edit Stock Details
                   </h3>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-gray-300 text-sm mb-2">
+                      <label className="block text-gray-700 text-sm mb-2">
                         Stock Symbol
                       </label>
                       <input
                         type="text"
-                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="e.g., AAPL"
                         value={stockSelectedTicker || ""}
                         readOnly
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-300 text-sm mb-2">
+                      <label className="block text-gray-700 text-sm mb-2">
                         Number of Shares
                       </label>
                       <input
                         type="number"
-                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="10"
                         value={new_no_of_Stocks || 0}
                         onChange={(e) =>
@@ -579,12 +587,12 @@ const PortfolioOverview = () => {
                   <div className="flex space-x-4 mt-8">
                     <button
                       onClick={() => setShowEditModal(false)}
-                      className="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg transition-all"
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-black py-3 rounded-lg transition-all"
                     >
                       Cancel
                     </button>
                     <button
-                      className="flex-1 bg-gradient-to-r from-slate-500 to-cyan-200 hover:from-slate-600 hover:to-cyan-300 text-white py-3 rounded-lg transition-all"
+                      className="flex-1 bg-gradient-to-r from-blue-400 to-cyan-300 hover:from-blue-500 hover:to-cyan-400 text-white py-3 rounded-lg transition-all"
                       onClick={handleEditStock}
                     >
                       Edit Stock

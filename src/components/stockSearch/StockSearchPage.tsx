@@ -269,6 +269,11 @@ const StockSearchPage = () => {
     })
       .then((res) => res.json())
       .then(() => {
+        return fetch(`http://127.0.0.1:5000/api/reset/?userId=${user?.id}`, {
+          method: "DELETE",
+        });
+      })
+      .then(() => {
         setShowAddModal(false);
         set_no_of_Stocks(0);
         window.location.reload();

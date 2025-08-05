@@ -198,7 +198,7 @@ const PortfolioSimulation = () => {
                 <h3 className="text-lg font-semibold">Starting Value</h3>
               </div>
               <p className="text-2xl font-bold text-green-600">
-                {startingValue}
+                {Number(startingValue).toFixed(2)}
               </p>
               <p className="text-sm text-gray-600">Mean outcome</p>
             </div>
