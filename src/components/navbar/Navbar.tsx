@@ -3,110 +3,117 @@ import React from "react";
 import Link from "next/link"; // Import Link from Next.js
 import { TrendingUp } from "lucide-react"; // Importing Lucide icons
 import { MessageIcon, NotificationIcon, ProfileIcon } from "./NavbarIcons";
+import { usePathname } from "next/navigation";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
+  const pathname = usePathname(); // Get current pathname
+
+  // Helper function to check if link is active
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
+  // <nav className="bg-[#f2f2f2] text-black py-4 px-8 flex justify-between items-center">
+  //   {/* Left Section: Logo and Links */}
+  //   <div className="flex items-center space-x-6">
+
+  //     {/* Investra Logo */}
+  //     <div className="flex items-center space-x-2">
+  //         <TrendingUp className="h-8 w-8 text-[#0cb9c1]" />
+  //         <h1 className="text-2xl font-bold text-[#0cb9c1] tracking-wide">
+  //             Investra
+  //         </h1>
+  //     </div>
+
+  //     <Link
+  //       href="/"
+  //       className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+  //     >
+  //       Home
+  //     </Link>
+
+  //     <Link
+  //       href="/stock"
+  //       className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+  //     >
+  //       Market
+  //     </Link>
+
+  //     <Link
+  //       href="/portfolio"
+  //       className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+  //     >
+  //       Portfolio
+  //     </Link>
+
+  //   </div>
+
+  //   {/* Right Section: Icons */}
+  //   <div className="flex items-center space-x-4">
+
+  //     <Link href="/profile">
+  //       <button className="p-2 focus:outline-none transition-all duration-500 ease-in-out hover:text-[#0cb9c1] hover:scale-125">
+  //         <ProfileIcon className="h-7 w-7" />
+  //       </button>
+  //     </Link>
+
+  //   </div>
+  // </nav>
+
+  // <nav className="bg-gradient-to-r from-slate-800/95 via-purple-800/90 to-slate-800/95 backdrop-blur-lg border-b border-white/15 shadow-lg text-white py-4 px-8 flex justify-between items-center sticky top-0 z-50">
+  //   {/* Left Section: Logo and Links */}
+  //   <div className="flex items-center space-x-8">
+  //     {/* Investra Logo */}
+  //     <div className="flex items-center space-x-3">
+  //       <div className="p-2 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl">
+  //         <TrendingUp className="h-6 w-6 text-white" />
+  //       </div>
+  //       <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent tracking-wide">
+  //         Investra
+  //       </h1>
+  //     </div>
+
+  //     {/* Navigation Links */}
+  //     <div className="hidden md:flex items-center space-x-2">
+  //       <Link
+  //         href="/"
+  //         className="relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group"
+  //       >
+  //         <span className="relative z-10 font-medium">Home</span>
+  //         <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+  //       </Link>
+
+  //       <Link
+  //         href="/stock"
+  //         className="relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group"
+  //       >
+  //         <span className="relative z-10 font-medium">Market</span>
+  //         <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+  //       </Link>
+
+  //       <Link
+  //         href="/portfolio"
+  //         className="relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group"
+  //       >
+  //         <span className="relative z-10 font-medium">Portfolio</span>
+  //         <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+  //       </Link>
+  //     </div>
+  //   </div>
+
+  //   {/* Right Section: Profile */}
+  //   <div className="flex items-center space-x-4">
+  //     <Link href="/profile">
+  //       <button className="relative p-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-cyan-400/30">
+  //         <ProfileIcon className="h-5 w-5 text-gray-300 group-hover:text-white" />
+  //         <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full animate-pulse"></div>
+  //       </button>
+  //     </Link>
+  //   </div>
+  // </nav>
+
   return (
-    // <nav className="bg-[#f2f2f2] text-black py-4 px-8 flex justify-between items-center">
-    //   {/* Left Section: Logo and Links */}
-    //   <div className="flex items-center space-x-6">
-
-    //     {/* Investra Logo */}
-    //     <div className="flex items-center space-x-2">
-    //         <TrendingUp className="h-8 w-8 text-[#0cb9c1]" />
-    //         <h1 className="text-2xl font-bold text-[#0cb9c1] tracking-wide">
-    //             Investra
-    //         </h1>
-    //     </div>
-
-    //     <Link
-    //       href="/"
-    //       className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
-    //     >
-    //       Home
-    //     </Link>
-
-    //     <Link
-    //       href="/stock"
-    //       className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
-    //     >
-    //       Market
-    //     </Link>
-
-    //     <Link
-    //       href="/portfolio"
-    //       className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
-    //     >
-    //       Portfolio
-    //     </Link>
-
-    //   </div>
-
-    //   {/* Right Section: Icons */}
-    //   <div className="flex items-center space-x-4">
-
-    //     <Link href="/profile">
-    //       <button className="p-2 focus:outline-none transition-all duration-500 ease-in-out hover:text-[#0cb9c1] hover:scale-125">
-    //         <ProfileIcon className="h-7 w-7" />
-    //       </button>
-    //     </Link>
-
-    //   </div>
-    // </nav>
-
-    // <nav className="bg-gradient-to-r from-slate-800/95 via-purple-800/90 to-slate-800/95 backdrop-blur-lg border-b border-white/15 shadow-lg text-white py-4 px-8 flex justify-between items-center sticky top-0 z-50">
-    //   {/* Left Section: Logo and Links */}
-    //   <div className="flex items-center space-x-8">
-    //     {/* Investra Logo */}
-    //     <div className="flex items-center space-x-3">
-    //       <div className="p-2 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl">
-    //         <TrendingUp className="h-6 w-6 text-white" />
-    //       </div>
-    //       <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent tracking-wide">
-    //         Investra
-    //       </h1>
-    //     </div>
-
-    //     {/* Navigation Links */}
-    //     <div className="hidden md:flex items-center space-x-2">
-    //       <Link
-    //         href="/"
-    //         className="relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group"
-    //       >
-    //         <span className="relative z-10 font-medium">Home</span>
-    //         <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
-    //       </Link>
-
-    //       <Link
-    //         href="/stock"
-    //         className="relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group"
-    //       >
-    //         <span className="relative z-10 font-medium">Market</span>
-    //         <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
-    //       </Link>
-
-    //       <Link
-    //         href="/portfolio"
-    //         className="relative px-4 py-2 text-gray-300 hover:text-white transition-all duration-300 group"
-    //       >
-    //         <span className="relative z-10 font-medium">Portfolio</span>
-    //         <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
-    //       </Link>
-    //     </div>
-    //   </div>
-
-    //   {/* Right Section: Profile */}
-    //   <div className="flex items-center space-x-4">
-    //     <Link href="/profile">
-    //       <button className="relative p-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-cyan-400/30">
-    //         <ProfileIcon className="h-5 w-5 text-gray-300 group-hover:text-white" />
-    //         <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full animate-pulse"></div>
-    //       </button>
-    //     </Link>
-    //   </div>
-    // </nav>
-
     <nav className="bg-white border-b-2 border-blue-100 shadow-sm text-gray-800 py-4 px-8 flex justify-between items-center sticky top-0 z-50">
       {/* Left Section: Logo and Links */}
       <div className="flex items-center space-x-8">
@@ -124,42 +131,43 @@ const Navbar = (props: Props) => {
         <div className="hidden md:flex items-center space-x-2">
           <Link
             href="/"
-            className="relative px-5 py-2.5 text-lg text-gray-900 hover:text-blue-600 transition-all duration-300 group font-medium"
+            className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}
           >
-            <span className="relative z-10">Home</span>
-            <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+            Home
           </Link>
 
           <Link
             href="/stock"
-            className="relative px-5 py-2.5 text-lg text-gray-900 hover:text-blue-600 transition-all duration-300 group font-medium"
+            className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/stock")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}
           >
-            <span className="relative z-10">Market</span>
-            <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+            Market
           </Link>
 
           <Link
             href="/portfolio"
-            className="relative px-5 py-2.5 text-lg text-gray-900 hover:text-blue-600 transition-all duration-300 group font-medium"
+            className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/portfolio")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}
           >
-            <span className="relative z-10">Portfolio</span>
-            <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+            Portfolio
           </Link>
+
           <Link
             href="/predictions"
-            className="relative px-5 py-2.5 text-lg text-gray-900 hover:text-blue-600 transition-all duration-300 group font-medium"
+            className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/predictions")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}
           >
-            <span className="relative z-10">Predictions</span>
-            <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
+            Predictions
           </Link>
-
-          {/* <Link
-            href="/portfolio"
-            className="relative px-5 py-2.5 text-gray-600 hover:text-blue-600 transition-all duration-300 group font-medium"
-          >
-            <span className="relative z-10">Portfolio</span>
-            <div className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100"></div>
-          </Link> */}
         </div>
       </div>
 
@@ -186,5 +194,6 @@ const Navbar = (props: Props) => {
     </nav>
   );
 };
+
 
 export default Navbar;

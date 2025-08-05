@@ -69,11 +69,11 @@ interface ShowPasswords {
     confirm: boolean;
 }
 
-type TabType = 'profile' | 'investment' ; // 'security' ; //| 'notifications'
+type TabType = 'profile' | 'investment'; // 'security' ; //| 'notifications'
 
 const Profile: React.FC = () => {
     const { data: session, status } = useSession();
-    const {user, portfolioStats} = useContext(UserContext)
+    const { user, portfolioStats } = useContext(UserContext)
 
     // User data state
     const [userData, setUserData] = useState<UserData>({
@@ -140,35 +140,35 @@ const Profile: React.FC = () => {
 
     // Form handlers
     const handleSaveProfile = async () => {
-    try {
-        const response = await fetch('/api/profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...userData,
-          userId: user.id
-        }),
-        });
+        try {
+            const response = await fetch('/api/profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...userData,
+                    userId: user.id
+                }),
+            });
 
-        const result = await response.json();
-        console.log('Saved profile:', result);
-        setIsEditing(false);
-    }     catch (err) {
-        console.error('Failed to save profile', err);
-    }
+            const result = await response.json();
+            console.log('Saved profile:', result);
+            setIsEditing(false);
+        } catch (err) {
+            console.error('Failed to save profile', err);
+        }
     };
 
     const handleSavePreferences = async () => {
         try {
             const response = await fetch("/api/investment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(investmentPrefs),
-        });
-        const data = await response.json();
-        console.log("Saved preferences", data);
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(investmentPrefs),
+            });
+            const data = await response.json();
+            console.log("Saved preferences", data);
         } catch (err) {
-        console.error("Error saving preferences", err);
+            console.error("Error saving preferences", err);
         }
     };
 
@@ -241,7 +241,7 @@ const Profile: React.FC = () => {
                 <p className="text-gray-600 mb-6">You need to be signed in to view your profile.</p>
                 <button
                     onClick={() => signIn()}
-                    className="px-6 py-3 bg-[#0cb9c1] text-white rounded-lg hover:bg-[#0aa8af] transition-colors font-semibold"
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
                 >
                     Sign In
                 </button>
@@ -272,7 +272,7 @@ const Profile: React.FC = () => {
                         <div className="flex items-center space-x-6">
                             {/* Avatar */}
                             <div className="relative">
-                                <div className="w-24 h-24 rounded-full bg-gradient-to-r from-[#0cb9c1] to-blue-500 flex items-center justify-center overflow-hidden">
+                                <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center overflow-hidden">
                                     {userData.avatar !== '/default-avatar.jpg' ? (
                                         <img
                                             src={userData.avatar}
@@ -283,7 +283,7 @@ const Profile: React.FC = () => {
                                         <User className="w-12 h-12 text-white" />
                                     )}
                                 </div>
-                                <label className="absolute bottom-0 right-0 bg-[#0cb9c1] rounded-full p-2 cursor-pointer hover:bg-[#0aa8af] transition-colors">
+                                <label className="absolute bottom-0 right-0 bg-blue-600 rounded-full p-2 cursor-pointer hover:bg-blue-700 transition-colors">
                                     <Camera className="w-4 h-4 text-white" />
                                     <input
                                         type="file"
@@ -331,13 +331,13 @@ const Profile: React.FC = () => {
                         { id: 'profile' as TabType, label: 'Profile Information', icon: User },
                         { id: 'investment' as TabType, label: 'Investment Preferences', icon: TrendingUp },
                         //{ id: 'security' as TabType, label: 'Security Settings', icon: Shield },
-                       // { id: 'notifications' as TabType, label: 'Notifications', icon: Bell }
+                        // { id: 'notifications' as TabType, label: 'Notifications', icon: Bell }
                     ].map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all ${activeTab === tab.id
-                                ? 'bg-[#0cb9c1] text-white shadow-sm'
+                                ? 'bg-blue-600 text-white shadow-sm'
                                 : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
@@ -356,7 +356,7 @@ const Profile: React.FC = () => {
                                 <h3 className="text-xl font-semibold text-gray-800">Profile Information</h3>
                                 <button
                                     onClick={() => isEditing ? handleSaveProfile() : setIsEditing(true)}
-                                    className="flex items-center space-x-2 px-4 py-2 bg-[#0cb9c1] text-white rounded-lg hover:bg-[#0aa8af] transition-colors"
+                                    className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                 >
                                     {isEditing ? <Save className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
                                     <span>{isEditing ? 'Save Changes' : 'Edit Profile'}</span>
@@ -371,7 +371,7 @@ const Profile: React.FC = () => {
                                         value={userData.name}
                                         onChange={(e) => handleInputChange('name', e.target.value)}
                                         disabled={!isEditing}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] disabled:bg-gray-50"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-gray-50"
                                     />
                                 </div>
 
@@ -382,7 +382,7 @@ const Profile: React.FC = () => {
                                         value={userData.email}
                                         onChange={(e) => handleInputChange('email', e.target.value)}
                                         disabled={!isEditing}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] disabled:bg-gray-50"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-gray-50"
                                     />
                                 </div>
 
@@ -393,7 +393,7 @@ const Profile: React.FC = () => {
                                         value={userData.phone}
                                         onChange={(e) => handleInputChange('phone', e.target.value)}
                                         disabled={!isEditing}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] disabled:bg-gray-50"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-gray-50"
                                     />
                                 </div>
 
@@ -404,7 +404,7 @@ const Profile: React.FC = () => {
                                         value={userData.location}
                                         onChange={(e) => handleInputChange('location', e.target.value)}
                                         disabled={!isEditing}
-                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] disabled:bg-gray-50"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-gray-50"
                                     />
                                 </div>
                             </div>
@@ -416,7 +416,7 @@ const Profile: React.FC = () => {
                                     onChange={(e) => handleInputChange('bio', e.target.value)}
                                     disabled={!isEditing}
                                     rows={4}
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] disabled:bg-gray-50"
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:bg-gray-50"
                                     placeholder="Tell us about your investment journey..."
                                 />
                             </div>
@@ -436,7 +436,7 @@ const Profile: React.FC = () => {
                                         <select
                                             value={investmentPrefs.riskTolerance}
                                             onChange={(e) => handleInvestmentPrefsChange('riskTolerance', e.target.value)}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1]"
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                                         >
                                             <option value="Conservative">Conservative</option>
                                             <option value="Moderate">Moderate</option>
@@ -449,7 +449,7 @@ const Profile: React.FC = () => {
                                         <select
                                             value={investmentPrefs.investmentHorizon}
                                             onChange={(e) => handleInvestmentPrefsChange('investmentHorizon', e.target.value)}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1]"
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                                         >
                                             <option value="1-3 years">1-3 years</option>
                                             <option value="3-5 years">3-5 years</option>
@@ -464,7 +464,7 @@ const Profile: React.FC = () => {
                                             type="number"
                                             value={investmentPrefs.monthlyInvestment}
                                             onChange={(e) => handleInvestmentPrefsChange('monthlyInvestment', Number(e.target.value))}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1]"
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                                         />
                                     </div>
 
@@ -473,7 +473,7 @@ const Profile: React.FC = () => {
                                         <select
                                             value={investmentPrefs.diversificationLevel}
                                             onChange={(e) => handleInvestmentPrefsChange('diversificationLevel', e.target.value)}
-                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1]"
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                                         >
                                             <option value="Low">Low</option>
                                             <option value="Medium">Medium</option>
@@ -493,7 +493,7 @@ const Profile: React.FC = () => {
                                                 type="checkbox"
                                                 checked={investmentPrefs.autoRebalancing}
                                                 onChange={(e) => handleInvestmentPrefsChange('autoRebalancing', e.target.checked)}
-                                                className="form-checkbox h-5 w-5 text-[#0cb9c1] rounded focus:ring-[#0cb9c1]"
+                                                className="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-600"
                                             />
                                         </label>
                                     </div>
@@ -501,7 +501,7 @@ const Profile: React.FC = () => {
 
                                 <button
                                     onClick={handleSavePreferences}
-                                    className="mt-6 px-6 py-2 bg-[#0cb9c1] text-white rounded-lg hover:bg-[#0aa8af] transition-colors"
+                                    className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                 >
                                     Save Preferences
                                 </button>
@@ -522,7 +522,7 @@ const Profile: React.FC = () => {
                                     </div>
                                     <button
                                         onClick={() => setShowPasswordForm(!showPasswordForm)}
-                                        className="px-4 py-2 bg-[#0cb9c1] text-white rounded-lg hover:bg-[#0aa8af] transition-colors"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                     >
                                         Change Password
                                     </button>
@@ -537,7 +537,7 @@ const Profile: React.FC = () => {
                                                     type={showPasswords.current ? "text" : "password"}
                                                     value={passwordData.currentPassword}
                                                     onChange={(e) => handlePasswordDataChange('currentPassword', e.target.value)}
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] pr-10"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 pr-10"
                                                     required
                                                 />
                                                 <button
@@ -557,7 +557,7 @@ const Profile: React.FC = () => {
                                                     type={showPasswords.new ? "text" : "password"}
                                                     value={passwordData.newPassword}
                                                     onChange={(e) => handlePasswordDataChange('newPassword', e.target.value)}
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] pr-10"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 pr-10"
                                                     required
                                                 />
                                                 <button
@@ -577,7 +577,7 @@ const Profile: React.FC = () => {
                                                     type={showPasswords.confirm ? "text" : "password"}
                                                     value={passwordData.confirmPassword}
                                                     onChange={(e) => handlePasswordDataChange('confirmPassword', e.target.value)}
-                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0cb9c1] pr-10"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 pr-10"
                                                     required
                                                 />
                                                 <button
@@ -593,7 +593,7 @@ const Profile: React.FC = () => {
                                         <div className="flex space-x-3">
                                             <button
                                                 type="submit"
-                                                className="px-4 py-2 bg-[#0cb9c1] text-white rounded-lg hover:bg-[#0aa8af] transition-colors"
+                                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                             >
                                                 Update Password
                                             </button>
@@ -647,7 +647,7 @@ const Profile: React.FC = () => {
                                                 type="checkbox"
                                                 checked={value}
                                                 onChange={(e) => handleNotificationChange(key as keyof NotificationPreferences, e.target.checked)}
-                                                className="form-checkbox h-5 w-5 text-[#0cb9c1] rounded focus:ring-[#0cb9c1]"
+                                                className="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-600"
                                             />
                                         </label>
                                     </div>
@@ -656,7 +656,7 @@ const Profile: React.FC = () => {
 
                             <button
                                 onClick={handleSavePreferences}
-                                className="mt-6 px-6 py-2 bg-[#0cb9c1] text-white rounded-lg hover:bg-[#0aa8af] transition-colors"
+                                className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                             >
                                 Save Notification Preferences
                             </button>
