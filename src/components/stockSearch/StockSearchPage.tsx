@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
 import { UserContext } from "@/provider/ContextProvider";
+import { StockList } from "@/provider/StockListProvider";
 // Dynamically import ApexCharts to avoid SSR issues
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -247,7 +248,16 @@ const StockSearchPage = () => {
   };
 
   const handleAddStock = () => {
-    if (!ticker || !no_of_Stocks) return;
+    if (!ticker || !no_of_Stocks) {
+      alert("Invalid Inputs.");
+      return;
+    }
+
+    if (!StockList.includes(ticker.toUpperCase())) {
+      alert("Invalid stock ticker. Please enter a valid one.");
+      return;
+    }
+
     fetch("http://127.0.0.1:5000/api/stocks/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -261,11 +271,13 @@ const StockSearchPage = () => {
       .then(() => {
         setShowAddModal(false);
         set_no_of_Stocks(0);
+        // window.location.reload();
       })
       .catch((err) => {
         console.error(err);
       });
   };
+
   // 6. Render
   return (
     // <>
@@ -859,7 +871,7 @@ const StockSearchPage = () => {
                       type="text"
                       className="w-full bg-gray-100 border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-800 font-medium focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
                       value={ticker}
-                      readOnly
+                      onChange={(e) => setTicker(e.target.value.toUpperCase())}
                     />
                   </div>
 

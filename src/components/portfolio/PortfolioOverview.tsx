@@ -30,6 +30,7 @@ import {
 import { useContext, useState } from "react";
 import PortfolioComparison from "./PortfolioComparison";
 import PortfolioSimulation from "./PortfolioSimulation";
+import { StockList } from "@/provider/StockListProvider";
 import { set } from "date-fns";
 
 const PortfolioOverview = () => {
@@ -40,7 +41,7 @@ const PortfolioOverview = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedView, setSelectedView] = useState("overview");
 
-  const [stockTicker, setStockTicker] = useState(null);
+  const [stockTicker, setStockTicker] = useState("");
   const [stockSelectedTicker, setStockSelectedTicker] = useState(null);
   const [no_of_Stocks, set_no_of_Stocks] = useState(0);
   const [new_no_of_Stocks, set_new_no_of_Stocks] = useState(0);
@@ -110,7 +111,16 @@ const PortfolioOverview = () => {
   };
 
   const handleAddStock = () => {
-    if (!stockTicker || !no_of_Stocks) return;
+    if (!stockTicker || !no_of_Stocks) {
+      alert("Invalid Inputs.");
+      return;
+    }
+
+    if (!StockList.includes(stockTicker.toUpperCase())) {
+      alert("Invalid stock ticker. Please enter a valid one.");
+      return;
+    }
+
     fetch("http://127.0.0.1:5000/api/stocks/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -125,6 +135,7 @@ const PortfolioOverview = () => {
         setShowAddModal(false);
         setStockTicker(null);
         set_no_of_Stocks(0);
+        window.location.reload();
       })
       .catch((err) => {
         console.error(err);
@@ -164,6 +175,7 @@ const PortfolioOverview = () => {
         setShowEditModal(false);
         setStockSelectedTicker(null);
         set_new_no_of_Stocks(0);
+        window.location.reload();
         console.log("Stock edited successfully");
       })
       .catch((err) => {
@@ -191,7 +203,7 @@ const PortfolioOverview = () => {
               <div>
                 <p className="text-gray-600 text-sm">Total Value</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  ${portfolioStats?.totalValue}
+                  ${Number(portfolioStats?.totalValue).toFixed(2)}
                 </p>
               </div>
               <DollarSign className="text-green-500 w-8 h-8" />
