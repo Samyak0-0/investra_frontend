@@ -497,6 +497,7 @@ const PortfolioOverview = () => {
             )}
 
             {showAddModal && (
+              //light mode made few commits ago
               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
                 <div className="bg-white rounded-2xl p-8 border border-gray-300 w-full max-w-md">
                   <h3 className="text-xl font-bold text-black mb-6">
@@ -551,6 +552,7 @@ const PortfolioOverview = () => {
             )}
 
             {showEditModal && (
+              //light mode made few commits ago
               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
                 <div className="bg-white rounded-2xl p-8 border border-gray-300 w-full max-w-md">
                   <h3 className="text-xl font-bold text-black mb-6">
