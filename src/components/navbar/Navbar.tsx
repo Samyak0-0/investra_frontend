@@ -133,7 +133,7 @@ const Navbar = (props: Props) => {
             href="/"
             className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/")
                 ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
-                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+                : "text-gray-600 hover:text-blue-600 hover:scale-105"
               }`}
           >
             Home
@@ -143,7 +143,7 @@ const Navbar = (props: Props) => {
             href="/stock"
             className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/stock")
                 ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
-                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+                : "text-gray-600 hover:text-blue-600 hover:scale-105"
               }`}
           >
             Market
@@ -153,7 +153,7 @@ const Navbar = (props: Props) => {
             href="/portfolio"
             className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/portfolio")
                 ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
-                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+                : "text-gray-600 hover:text-blue-600 hover:scale-105"
               }`}
           >
             Portfolio
@@ -163,7 +163,7 @@ const Navbar = (props: Props) => {
             href="/predictions"
             className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/predictions")
                 ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
-                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+                : "text-gray-600 hover:text-blue-600 hover:scale-105"
               }`}
           >
             Predictions

@@ -21,7 +21,7 @@ const getNewsData = async (country: String, category: String) => {
 const StockDashboard = () => {
   const { data, status } = useSession();
   
-  const [selectedStock, setSelectedStock] = useState('AAPL');
+  const [selectedStock, setSelectedStock] = useState('');
   const [newsData, setNewsData] = useState([]);
   const [newsLoading, setNewsLoading] = useState(true);
   const [newsError, setNewsError] = useState('');

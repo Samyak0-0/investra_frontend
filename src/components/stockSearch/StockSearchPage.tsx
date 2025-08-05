@@ -271,7 +271,7 @@ const StockSearchPage = () => {
       .then(() => {
         setShowAddModal(false);
         set_no_of_Stocks(0);
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((err) => {
         console.error(err);

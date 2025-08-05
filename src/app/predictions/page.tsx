@@ -4,6 +4,8 @@ import StockSelector from "@/components/predictions/StockSelector";
 import StockChart from "@/components/predictions/StockChart";
 import { fetchStockData, fetchPredictions } from "@/lib/api";
 import { StockPoint } from "@/types/stock";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function PredictionPage() {
   const [company, setCompany] = useState("AAPL");
@@ -11,6 +13,13 @@ export default function PredictionPage() {
   const [actualData, setActualData] = useState<StockPoint[]>([]);
   const [predictedData, setPredictedData] = useState<StockPoint[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const { status } = useSession();
+  const router = useRouter();
+
+  if (status === "unauthenticated") {
+    router.push("/api/auth/signin");
+  }
 
   const transformStockData = (data: any): StockPoint[] => {
     if (!data["Time Series (Daily)"]) return [];
@@ -35,11 +44,13 @@ export default function PredictionPage() {
         const prediction = await fetchPredictions(company, days);
         const startDate = transformed[transformed.length - 1]?.x || Date.now();
 
-        const predicted = prediction.predictions.map((price: number, i: number) => {
-          const nextDate = new Date(startDate);
-          nextDate.setDate(nextDate.getDate() + i + 1);
-          return { x: nextDate.getTime(), y: price };
-        });
+        const predicted = prediction.predictions.map(
+          (price: number, i: number) => {
+            const nextDate = new Date(startDate);
+            nextDate.setDate(nextDate.getDate() + i + 1);
+            return { x: nextDate.getTime(), y: price };
+          }
+        );
 
         setPredictedData(predicted);
       } finally {
