@@ -27,7 +27,6 @@ const StockDashboard = () => {
   const [newsError, setNewsError] = useState('');
 
   const {user, portfolioStats} = useContext(UserContext);
-  console.log("User Context:", user, portfolioStats);
 
   const dailyGainLoss = portfolioStats?.totalValue - portfolioStats?.yesterdaysValue;
 
