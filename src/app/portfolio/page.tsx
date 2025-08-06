@@ -1,12 +1,20 @@
+"use client";
 
-import { UserContext } from "@/provider/ContextProvider";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import PortfolioOverview from "@/components/portfolio/PortfolioOverview";
 
-const userId: string = ""; // Retrieve from the session 
 const page = () => {
+  const { status } = useSession();
+  const router = useRouter();
+
+  if (status === "unauthenticated") {
+    router.push("/api/auth/signin");
+  }
+
   return (
     <div>
-      <PortfolioOverview/>
+      <PortfolioOverview />
     </div>
   );
 };

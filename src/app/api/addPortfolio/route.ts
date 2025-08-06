@@ -13,29 +13,27 @@ export async function POST(request: Request) {
     });
 
     if (existingPortfolio) {
-      
       const updatedPortfolio = await prisma.portfolio.update({
         where: {
-          
           user_id_stock_Name: {
             user_id: userId,
             stock_Name: stockTicker,
           },
         },
         data: {
-          stock_Amt: existingPortfolio.stock_Amt + no_of_Stocks, 
+          stock_Amt: existingPortfolio.stock_Amt + no_of_Stocks,
         },
       });
       return NextResponse.json(updatedPortfolio, { status: 200 });
     } else {
-      
       const newPortfolio = await prisma.portfolio.create({
         data: {
-          user_id: userId,        
+          user_id: userId,
           stock_Name: stockTicker,
-          stock_Amt: no_of_Stocks, 
+          stock_Amt: no_of_Stocks,
         },
       });
+
       return NextResponse.json(newPortfolio, { status: 201 });
     }
   } catch (error) {

@@ -51,7 +51,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  hashedPassword String?
+  hashedPassword   String?
   phone            String?
   location         String?
   joinDate         DateTime @default(now())

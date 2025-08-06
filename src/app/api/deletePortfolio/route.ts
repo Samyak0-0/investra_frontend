@@ -22,6 +22,10 @@ export async function DELETE(request: Request) {
       },
     });
 
+    fetch(`http://127.0.0.1:5000/api/reset/?userId=${userId}`, {
+        method: "DELETE",
+      });
+
     return NextResponse.json(
       { message: "Stock deleted successfully", deletedPortfolio },
       { status: 200 }

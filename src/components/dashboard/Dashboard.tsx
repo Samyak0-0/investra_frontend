@@ -12,7 +12,7 @@ import { UserContext } from "@/provider/ContextProvider";
 const getNewsData = async (country: String, category: String) => {
   if (country != null || category != null) {
     const response = await fetch(
-      `http://127.0.0.1:5000/api/news/${country}/${category}/${company}`
+      `http://127.0.0.1:5000/api/news/${country}/${category}`
     );
     return response.json()
   }
@@ -21,7 +21,7 @@ const getNewsData = async (country: String, category: String) => {
 const StockDashboard = () => {
   const { data, status } = useSession();
   
-  const [selectedStock, setSelectedStock] = useState('AAPL');
+  const [selectedStock, setSelectedStock] = useState('');
   const [newsData, setNewsData] = useState([]);
   const [newsLoading, setNewsLoading] = useState(true);
   const [newsError, setNewsError] = useState('');
@@ -258,14 +258,7 @@ const StockDashboard = () => {
                     <div className="h-95 w-80">
                       <ResponsiveContainer width="100%" height="90%">
                         <PieChart>
-                          <circle
-                            cx="50%"
-                            cy="45%"
-                            r={150.5} // Slightly larger than outerRadius
-                            fill="black"
-                            stroke="#1a1b1cff" // Border color (gray-700 in Tailwind)
-                            strokeWidth={4}
-                          />
+                          
                           <Pie
                             data={pieChartData}
                             cx="50%"
