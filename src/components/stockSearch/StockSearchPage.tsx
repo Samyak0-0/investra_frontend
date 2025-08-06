@@ -707,35 +707,32 @@ const StockSearchPage = () => {
                   <button
                     type="button"
                     onClick={() => setInterval("daily")}
-                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-                      interval === "daily"
-                        ? "bg-blue-500 text-white shadow-lg transform scale-105"
-                        : "bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-400"
-                    }`}
+                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${interval === "daily"
+                      ? "bg-blue-500 text-white shadow-lg transform scale-105 cursor-pointer"
+                      : "bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-400 cursor-pointer"
+                      }`}
                   >
-                    📊 Daily
+                    Daily
                   </button>
                   <button
                     type="button"
                     onClick={() => setInterval("weekly")}
-                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-                      interval === "weekly"
-                        ? "bg-blue-600 text-white shadow-lg transform scale-105"
-                        : "bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-400"
-                    }`}
+                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${interval === "weekly"
+                      ? "bg-blue-600 text-white shadow-lg transform scale-105 cursor-pointer"
+                      : "bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-400 cursor-pointer"
+                      }`}
                   >
-                    📈 Weekly
+                    Weekly
                   </button>
                   <button
                     type="button"
                     onClick={() => setInterval("monthly")}
-                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-                      interval === "monthly"
-                        ? "bg-blue-700 text-white shadow-lg transform scale-105"
-                        : "bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-400"
-                    }`}
+                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${interval === "monthly"
+                      ? "bg-blue-700 text-white shadow-lg transform scale-105 cursor-pointer"
+                      : "bg-white text-blue-600 border-2 border-blue-200 cursor-pointer hover:bg-blue-50 hover:border-blue-400"
+                      }`}
                   >
-                    📅 Monthly
+                    Monthly
                   </button>
                 </div>
               </div>
@@ -745,14 +742,14 @@ const StockSearchPage = () => {
                 <button
                   onClick={() => setShowAddModal(true)}
                   type="button"
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2"
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  💼 Add to Portfolio
+                  Add to Portfolio
                 </button>
 
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
                   disabled={loading}
                 >
                   {loading ? (
@@ -780,7 +777,7 @@ const StockSearchPage = () => {
                       Loading...
                     </span>
                   ) : (
-                    "🔍 Get Stock Data"
+                    " Get Stock Data"
                   )}
                 </button>
               </div>
@@ -806,7 +803,7 @@ const StockSearchPage = () => {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
                     <h2 className="text-2xl font-bold text-gray-800">
-                      📈 {ticker} Stock Chart
+                      {ticker} Stock Chart
                     </h2>
                     <p className="text-gray-600 text-sm">
                       Interactive stock price visualization
@@ -814,7 +811,7 @@ const StockSearchPage = () => {
                   </div>
                   <button
                     onClick={handleGraphChange}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-md"
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-md cursor-pointer"
                   >
                     🔄 Switch to {chartType === "line" ? "Candlestick" : "Line"}{" "}
                     Chart
@@ -860,7 +857,7 @@ const StockSearchPage = () => {
               <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
                 <div className="p-6 border-b border-gray-100">
                   <h3 className="text-2xl font-bold text-gray-800 flex items-center">
-                    💼 Add to Portfolio
+                    Add to Portfolio
                   </h3>
                   <p className="text-gray-600 text-sm mt-1">
                     Add this stock to your investment portfolio
@@ -897,15 +894,15 @@ const StockSearchPage = () => {
                 <div className="p-6 bg-gray-50 border-t border-gray-100 flex space-x-4 rounded-b-2xl">
                   <button
                     onClick={() => setShowAddModal(false)}
-                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-xl transition-all duration-200"
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-xl transition-all duration-200 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
-                    className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
+                    className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg cursor-pointer"
                     onClick={handleAddStock}
                   >
-                    ✅ Add Stock
+                    Add Stock
                   </button>
                 </div>
               </div>

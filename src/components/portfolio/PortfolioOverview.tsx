@@ -221,9 +221,8 @@ const PortfolioOverview = () => {
               <div>
                 <p className="text-gray-600 text-sm">Today's Change</p>
                 <p
-                  className={`text-2xl font-bold ${
-                    dailyGainLoss >= 0 ? "text-green-500" : "text-red-500"
-                  }`}
+                  className={`text-2xl font-bold ${dailyGainLoss >= 0 ? "text-green-500" : "text-red-500"
+                    }`}
                 >
                   {dailyGainLoss >= 0 ? "+" : ""}$
                   {Number(dailyGainLoss).toLocaleString(undefined, {
@@ -259,9 +258,9 @@ const PortfolioOverview = () => {
                 <p className="text-2xl font-bold text-green-500">
                   {portfolioStats?.totalValue
                     ? (
-                        (dailyGainLoss / portfolioStats.totalValue) *
-                        100
-                      ).toFixed(2)
+                      (dailyGainLoss / portfolioStats.totalValue) *
+                      100
+                    ).toFixed(2)
                     : "0.00"}{" "}
                   %
                 </p>
@@ -271,16 +270,15 @@ const PortfolioOverview = () => {
           </div>
         </div>
 
-        <div className="flex space-x-1 mb-8 bg-white/10 backdrop-blur-md rounded-xl p-1">
+        <div className="flex space-x-1 mb-8 bg-white/10 backdrop-blur-md rounded-xl p-1 ">
           {["overview", "comparison", "simulation"].map((tab) => (
             <button
               key={tab}
               onClick={() => setSelectedView(tab)}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                selectedView === tab
-                  ? " bg-slate-800/30 text-black shadow-lg"
-                  : "text-gray-600 hover:text-slate-900 hover:bg-white/10"
-              }`}
+              className={`px-6 py-3 rounded-lg font-semibold transition-all ${selectedView === tab
+                ? " bg-slate-800/30 text-black shadow-lg"
+                : "text-gray-600 hover:text-slate-900 hover:bg-white/10"
+                }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
@@ -291,13 +289,13 @@ const PortfolioOverview = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
             {/* Portfolio Holdings */}
             <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg w-full">
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-6 ">
                 <h2 className="text-xl font-bold text-gray-900">Holdings</h2>
                 <button
                   onClick={() => setShowAddModal(true)}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-all"
+                  className="cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-all"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4 " />
                   <span>Add Stock</span>
                 </button>
               </div>
@@ -330,11 +328,10 @@ const PortfolioOverview = () => {
                           ${stock.closing_price.toLocaleString()}
                         </p>
                         <p
-                          className={`text-sm ${
-                            stock.closing_price - stock.second_price >= 0
-                              ? "text-green-500"
-                              : "text-red-500"
-                          }`}
+                          className={`text-sm ${stock.closing_price - stock.second_price >= 0
+                            ? "text-green-500"
+                            : "text-red-500"
+                            }`}
                         >
                           {stock.closing_price - stock.second_price >= 0
                             ? "+"
@@ -471,9 +468,8 @@ const PortfolioOverview = () => {
                         boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                       }}
                       formatter={(value, name) => [
-                        `${value.toFixed(2)} (${
-                          pieChartData.find((item) => item.name === name)
-                            ?.percentage
+                        `${value.toFixed(2)} (${pieChartData.find((item) => item.name === name)
+                          ?.percentage
                         }%)`,
                         name,
                       ]}
@@ -497,20 +493,24 @@ const PortfolioOverview = () => {
             )}
 
             {showAddModal && (
-              //light mode made few commits ago
-              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-                <div className="bg-white rounded-2xl p-8 border border-gray-300 w-full max-w-md">
-                  <h3 className="text-xl font-bold text-black mb-6">
-                    Add New Stock
-                  </h3>
-                  <div className="space-y-4">
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all">
+                  <div className="p-6 border-b border-gray-100">
+                    <h3 className="text-2xl font-bold text-gray-800 flex items-center">
+                      Add New Stock
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1">
+                      Add this stock to your investment portfolio
+                    </p>
+                  </div>
+                  <div className="p-6 space-y-6">
                     <div>
-                      <label className="block text-gray-700 text-sm mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Stock Symbol
                       </label>
                       <input
                         type="text"
-                        className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-100 border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-800 font-medium focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
                         placeholder="e.g., AAPL"
                         value={stockTicker || ""}
                         onChange={(e) =>
@@ -519,29 +519,29 @@ const PortfolioOverview = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Number of Shares
                       </label>
                       <input
                         type="number"
-                        className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="10"
-                        value={no_of_Stocks || 0}
+                        className="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-800 font-medium focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-500"
+                        placeholder="Enter number of shares"
+                        value={no_of_Stocks || ""}
                         onChange={(e) =>
                           set_no_of_Stocks(Number(e.target.value))
                         }
                       />
                     </div>
                   </div>
-                  <div className="flex space-x-4 mt-8">
+                  <div className="p-6 bg-gray-50 border-t border-gray-100 flex space-x-4 rounded-b-2xl">
                     <button
                       onClick={() => setShowAddModal(false)}
-                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-black py-3 rounded-lg transition-all"
+                      className="cursor-pointer flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-xl transition-all duration-200"
                     >
                       Cancel
                     </button>
                     <button
-                      className="flex-1 bg-gradient-to-r from-blue-400 to-cyan-300 hover:from-blue-500 hover:to-cyan-400 text-white py-3 rounded-lg transition-all"
+                      className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg cursor-pointer"
                       onClick={handleAddStock}
                     >
                       Add Stock
@@ -589,12 +589,12 @@ const PortfolioOverview = () => {
                   <div className="flex space-x-4 mt-8">
                     <button
                       onClick={() => setShowEditModal(false)}
-                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-black py-3 rounded-lg transition-all"
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-black py-3 rounded-lg transition-all cursor-pointer"
                     >
                       Cancel
                     </button>
                     <button
-                      className="flex-1 bg-gradient-to-r from-blue-400 to-cyan-300 hover:from-blue-500 hover:to-cyan-400 text-white py-3 rounded-lg transition-all"
+                      className="cursor-pointer flex-1 bg-gradient-to-r from-blue-400 to-cyan-300 hover:from-blue-500 hover:to-cyan-400 text-white py-3 rounded-lg transition-all"
                       onClick={handleEditStock}
                     >
                       Edit Stock
@@ -618,12 +618,12 @@ const PortfolioOverview = () => {
                   <div className="flex space-x-4">
                     <button
                       onClick={() => setPendingDeleteStock(null)}
-                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg transition-all"
+                      className="cursor-pointer flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg transition-all"
                     >
                       Cancel
                     </button>
                     <button
-                      className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition-all"
+                      className="cursor-pointer flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition-all"
                       onClick={() => {
                         handleStockDelete(pendingDeleteStock);
                         setPendingDeleteStock(null);
