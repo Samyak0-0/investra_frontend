@@ -8,7 +8,7 @@ interface Props {
   selectedDays: number;
 }
 
-const companies = ["AAPL", "MSFT", "NVDA", "AMZN", "TSLA"];
+const companies = ["AAPL", "MSFT", "NVDA", "AMZN", "TSLA", "GOOGL"];
 const dayOptions = [
   { label: "1 Week (7 days)", value: 7 },
   { label: "1 Month (30 days)", value: 30 },
