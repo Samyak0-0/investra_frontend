@@ -131,36 +131,46 @@ const Navbar = (props: Props) => {
         <div className="hidden md:flex items-center space-x-2">
           <Link
             href="/"
-            className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/")
-              ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
-              : "text-gray-600 hover:text-blue-600 hover:scale-105"
+         className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
               }`}
           >
             Home
           </Link>
-          <Link
+           <Link
             href="/stock"
-            className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+            className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/stock")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}
           >
             Market
           </Link>
 
           <Link
             href="/portfolio"
-            className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
+            className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/portfolio")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}
           >
             Portfolio
           </Link>
           <Link
             href="/predictions"
-            className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
-          >
+ className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/predictions")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}          >
             Predictions
           </Link>
           <Link
             href="/market_news"
-            className="text-lg font-medium hover:text-[#0cb9c1] hover:scale-125 px-4 py-2 transition-all duration-500"
-          >
+ className={`text-lg font-medium px-4 py-2 transition-all duration-500 ${isActive("/market_news")
+                ? "text-blue-600 bg-blue-50 rounded-lg scale-105"
+                : "text-gray-600 hover:text-blue-600 hover:scale-125"
+              }`}          >
             Market News
           </Link>
 
