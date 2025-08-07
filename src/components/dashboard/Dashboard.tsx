@@ -139,6 +139,7 @@ const StockDashboard = () => {
         return {
           name: stock.stock_name,
           value: totalValue,
+          color: pieChartColors[index % pieChartColors.length],
         };
       })
     : [];
