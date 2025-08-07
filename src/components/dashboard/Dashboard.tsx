@@ -133,16 +133,16 @@ const StockDashboard = () => {
 
   // Create pie chart data from portfolioStats
   const pieChartData =
-    portfolioStats &&
-    portfolioStats?.portfolio.map((stock, index) => {
-      const totalValue = parseFloat(stock.closing_price) * stock.stock_amt;
-      return {
-        name: stock.stock_name,
-        value: totalValue,
-        percentage: ((totalValue / portfolioStats.totalValue) * 100).toFixed(1),
-        color: pieChartColors[index % pieChartColors.length],
-      };
-    });
+    Array.isArray(portfolioStats?.portfolio)
+    ? portfolioStats.portfolio.map((stock, index) => {
+        const totalValue = parseFloat(stock.closing_price) * stock.stock_amt;
+        return {
+          name: stock.stock_name,
+          value: totalValue,
+        };
+      })
+    : [];
+
 
   // Get current selected stock data from portfolio
   const getCurrentStockData = () => {
